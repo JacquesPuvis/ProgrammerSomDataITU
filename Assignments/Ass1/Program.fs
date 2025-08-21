@@ -23,7 +23,9 @@ let cvalue = lookup env "c";;
 type expr = 
   | CstI of int
   | Var of string
-  | Prim of string * expr * expr;;
+  | Prim of string * expr * expr
+  | If of expr * expr * expr;;
+
 
 let e1 = CstI 17;;
 
@@ -35,6 +37,7 @@ let e4 = Prim ("==", CstI 17, e1);;
 
 let e5 = Prim ("max", e1, e2);;
 let e6 = Prim ("min", e1, e2);;
+let e7 = If(Var "a", CstI 11, CstI 22)
 
 
 (* Evaluation within an environment *)
@@ -49,6 +52,10 @@ let rec eval e (env : (string * int) list) : int =
     | Prim ("==", e1,e2) -> if eval e1 env = eval e2 env then 1 else 0
     | Prim ("max", e1,e2) -> if eval e1 env < eval e2 env then eval e2 env else eval e1 env
     | Prim ("min", e1,e2) -> if eval e1 env < eval e2 env then eval e1 env else eval e2 env
+    //(iv) (v)
+    | If(e1, e2, e3)    ->
+        let cond = eval e1 env
+        if cond <> 0 then eval e2 env else eval e3 env
 
 
 
@@ -78,3 +85,29 @@ let e3v  = eval e3 env;;
 let e4v  = eval e4 env;;
 let e5v  = eval e5 env;;
 let e6v  = eval e6 env;;
+
+let e7v = eval e7 env
+
+
+
+// (1.2)
+
+type aexpr =
+  | CstI of int
+  | Var of string
+  | Add of aexpr * aexpr
+  | Mul of aexpr * aexpr
+  | Sub of aexpr * aexpr
+
+let rec aeval (ae : aexpr) (env : (string * int) list) : int =
+    match ae with
+    | CstI i -> i
+    | Var x -> lookup env x
+    | Add (a,b) -> aeval a env + aeval b env
+    | Mul (a,b) -> aeval a env * aeval b env
+    | Sub (a,b) -> aeval a env - aeval b env
+
+let ae1 = Mul(Var "a", Add (Var "c", CstI 3))
+
+
+let aev1 = aeval ae1 env
