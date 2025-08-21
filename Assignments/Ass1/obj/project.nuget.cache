@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "uJt7A8hzEVw=",
+  "success": true,
+  "projectFilePath": "/home/jacquespuvis/itu/5sem/psd/Assignments/Ass1/Ass1.fsproj",
+  "expectedPackageFiles": [
+    "/home/jacquespuvis/.nuget/packages/fsharp.core/9.0.202/fsharp.core.9.0.202.nupkg.sha512"
+  ],
+  "logs": []
+}
