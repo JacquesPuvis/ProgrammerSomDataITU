@@ -91,7 +91,7 @@ let e7v = eval e7 env
 
 
 // (1.2)
-
+// (i)
 type aexpr =
   | CstI of int
   | Var of string
@@ -109,5 +109,51 @@ let rec aeval (ae : aexpr) (env : (string * int) list) : int =
 
 let ae1 = Mul(Var "a", Add (Var "c", CstI 3))
 
+//(ii)
+let ae2 = Sub(Var "v", Add(Var "w",Var "z"))
+let ae3 = Mul(CstI 2, Sub(Var "v", Add(Var "w", Var "z")))
 
-let aev1 = aeval ae1 env
+let ae4 = Add(Var "x", Add(Var "y", Add(Var "z", Var "v")))
+
+
+//(iii)
+
+let rec fmt (ae: aexpr) : string =
+    match ae with
+    | CstI i        -> string i
+    | Var x         -> x
+    | Add (a, b)  -> "(" + fmt a + " + " + fmt b + ")"
+    | Mul (a, b)  -> "(" + fmt a + " * " + fmt b + ")"
+    | Sub (a, b)  -> "(" + fmt a + " - " + fmt b + ")"
+
+//(iv)
+
+let ae5 = Add(Var "x", Add(Var "y", Mul(Var "z", CstI 1)))
+
+
+let rec simplify (ae1: aexpr) : aexpr =
+    match ae1 with
+    | CstI i -> CstI i
+    | Var x -> Var x
+    | Add (a, b) ->
+        let sa = simplify a
+        let sb = simplify b
+        match (sa, sb) with
+        | (CstI 0, _) -> sb
+        | (_, CstI 0) -> sa
+        | _ -> Add (sa, sb)
+    | Mul (a, b) ->
+        let sa = simplify a
+        let sb = simplify b
+        match (sa, sb) with
+        | (CstI 0, _) -> CstI 0
+        | (_, CstI 0) -> CstI 0
+        | (CstI 1, _) -> sb
+        | (_, CstI 1) -> sa
+        | _ -> Mul (sa, sb)
+    | Sub (a, b) ->
+        let sa = simplify a
+        let sb = simplify b
+        match (sa, sb) with
+        | (_, CstI 0) -> sa
+        | _ -> Sub (sa, sb)
