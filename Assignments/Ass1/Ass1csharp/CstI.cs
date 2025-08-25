@@ -9,4 +9,8 @@ public class CstI : Expr {
     public override int Eval(Dictionary<string, int> env) {
         return Value;
     }
+
+    public override Expr Simplify() {
+        return this; // Constants are already simplified
+    }
 }

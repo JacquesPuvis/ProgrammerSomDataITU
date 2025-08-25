@@ -13,4 +13,8 @@ public class Var : Expr {
             throw new ArgumentException($"Variable '{Name}' not found in environment");
         }
     }
+
+    public override Expr Simplify() {
+        return this; // Variables are already simplified
+    }
 }
