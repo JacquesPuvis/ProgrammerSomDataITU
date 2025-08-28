@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/jacquespuvis/itu/5sem/psd/Assignments/Ass1/Ass1csharp/Ass1csharp.csproj",
+      "projectUniqueName": "/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass1/Ass1csharp/Ass1csharp.csproj",
       "projectName": "Ass1csharp",
-      "projectPath": "/home/jacquespuvis/itu/5sem/psd/Assignments/Ass1/Ass1csharp/Ass1csharp.csproj",
+      "projectPath": "/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass1/Ass1csharp/Ass1csharp.csproj",
       "packagesPath": "/home/jacquespuvis/.nuget/packages/",
-      "outputPath": "/home/jacquespuvis/itu/5sem/psd/Assignments/Ass1/Ass1csharp/obj/",
+      "outputPath": "/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass1/Ass1csharp/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/jacquespuvis/.nuget/NuGet/NuGet.Config"
