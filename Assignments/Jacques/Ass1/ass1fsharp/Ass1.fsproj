@@ -8,6 +8,7 @@
   <ItemGroup>
     <Compile Include="Program.fs" />
     <Compile Include="teststuff.fs" />
+    <Compile Include="Intcomp1.fs" />
   </ItemGroup>
 
 </Project>
