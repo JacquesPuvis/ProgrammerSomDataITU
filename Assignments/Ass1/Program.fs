@@ -157,3 +157,4 @@ let rec simplify (ae1: aexpr) : aexpr =
         match (sa, sb) with
         | (_, CstI 0) -> sa
         | _ -> Sub (sa, sb)
+        
