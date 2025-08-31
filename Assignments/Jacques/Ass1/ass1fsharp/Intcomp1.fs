@@ -10,12 +10,12 @@ module Intcomp1
 type expr = 
   | CstI of int
   | Var of string
-  | Let of string * expr * expr
+  | Let  of (string * expr) list * expr   // CHANGED: multiple sequential bindings
   | Prim of string * expr * expr;;
 
 (* Some closed expressions: *)
 
-let e1 = Let("z", CstI 17, Prim("+", Var "z", Var "z"));;
+let e1 = Let([("z", CstI 17)], Prim("+", Var "z", Var "z"));;
 
 let e2 = Let("z", CstI 17, 
              Prim("+", Let("z", CstI 22, Prim("*", CstI 100, Var "z")),
@@ -43,10 +43,13 @@ let rec eval e (env : (string * int) list) : int =
     match e with
     | CstI i            -> i
     | Var x             -> lookup env x 
-    | Let(x, erhs, ebody) -> 
-      let xval = eval erhs env
-      let env1 = (x, xval) :: env 
-      eval ebody env1
+    | Let (binds, ebody) ->
+      let env' =
+        (env, binds)
+        ||> List.fold (fun acc (x, erhs) ->
+              let v = eval erhs acc   
+              (x, v) :: acc)
+      eval ebody env'
     | Prim("+", e1, e2) -> eval e1 env + eval e2 env
     | Prim("*", e1, e2) -> eval e1 env * eval e2 env
     | Prim("-", e1, e2) -> eval e1 env - eval e2 env
@@ -200,12 +203,24 @@ let rec minus (xs, ys) =
 
 (* Find all variables that occur free in expression e *)
 
+let lst = [2;4;6]
+let result : int = lst |> List.fold (fun acc x -> x + acc) 0;;
+
 let rec freevars e : string list =
     match e with
     | CstI i -> []
     | Var x  -> [x]
-    | Let(x, erhs, ebody) -> 
-          union (freevars erhs, minus (freevars ebody, [x]))
+    | Let(binds, body) ->
+      let (fvs, bound) =
+        List.fold (fun (acc_fvs, acc_bound) (x, erhs) ->
+                      // free vars of rhs, remove already bound ones
+                      let fv_rhs = minus (freevars erhs, acc_bound)
+                      // accumulate and extend bound set
+                      (union(acc_fvs, fv_rhs), x::acc_bound))
+                  ([], []) binds
+      // body free vars minus all bound names
+      let fv_body = minus (freevars body, bound)
+      union(fvs, fv_body)
     | Prim(ope, e1, e2) -> union (freevars e1, freevars e2);;
 
 (* Alternative definition of closed *)
