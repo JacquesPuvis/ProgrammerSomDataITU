@@ -45,10 +45,9 @@ let rec eval e (env : (string * int) list) : int =
     | Var x             -> lookup env x 
     | Let (binds, ebody) ->
       let env' =
-        (env, binds)
-        ||> List.fold (fun acc (x, erhs) ->
+        List.fold (fun acc (x, erhs) ->
               let v = eval erhs acc   
-              (x, v) :: acc)
+              (x, v) :: acc) env binds
       eval ebody env'
     | Prim("+", e1, e2) -> eval e1 env + eval e2 env
     | Prim("*", e1, e2) -> eval e1 env * eval e2 env
