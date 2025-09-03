@@ -121,7 +121,7 @@ let rec tcomp (e : expr) (cenv : string list) : texpr =
 let rec teval (e : texpr) (renv : int list) : int =
     match e with
     | TCstI i -> i
-    | TVar n  -> List.nth renv n
+    | TVar n  -> List.item n renv
     | TLet(erhs, ebody) -> 
       let xval = teval erhs renv
       let renv1 = xval :: renv 

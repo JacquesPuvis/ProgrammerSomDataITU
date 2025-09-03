@@ -132,7 +132,7 @@ let rec fmt (ae: aexpr) : string =
 
 let ae5 = Add(Var "x", Add(Var "y", Mul(Var "z", CstI 1)))
 
-
+//(iv)
 let rec simplify (ae1: aexpr) : aexpr =
     match ae1 with
     | CstI i -> CstI i
@@ -159,6 +159,15 @@ let rec simplify (ae1: aexpr) : aexpr =
         match (sa, sb) with
         | (_, CstI 0) -> sa
         | _ -> Sub (sa, sb)
+
+// (v)
+let rec diff v = function
+  | CstI _ -> CstI 0
+  | Var x   -> if x = v then CstI 1 else CstI 0
+  | Add(a,b) -> Add(diff v a, diff v b)             
+  | Sub(a,b) -> Sub(diff v a, diff v b)              
+  | Mul(a,b) -> Add(Mul(diff v a, b), Mul(a, diff v b))           
+
 
 
 
