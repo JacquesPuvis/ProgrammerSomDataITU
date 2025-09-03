@@ -7,6 +7,15 @@
 
   <ItemGroup>
     <Compile Include="Program.fs" />
+    <Compile Include="C#-files\Expr.cs" />
+    <Compile Include="C#-files\CstI.cs" />
+    <Compile Include="C#-files\Var.cs" />
+    <Compile Include="C#-files\Binop.cs" />
+    <Compile Include="C#-files\Add.cs" />
+    <Compile Include="C#-files\Mul.cs" />
+    <Compile Include="C#-files\Sub.cs" />
+    <Compile Include="C#-files\Program.cs" />
+    <Content Include="C#-files\Sub" />
   </ItemGroup>
 
 </Project>
