@@ -74,12 +74,9 @@ let rec freevars e : string list =
     | Let(binds, body) ->
       let (fvs, bound) =
         List.fold (fun (acc_fvs, acc_bound) (x, erhs) ->
-                      // free vars of rhs, remove already bound ones
                       let fv_rhs = minus (freevars erhs, acc_bound)
-                      // accumulate and extend bound set
                       (union(acc_fvs, fv_rhs), x::acc_bound))
                   ([], []) binds
-      // body free vars minus all bound names
       let fv_body = minus (freevars body, bound)
       union(fvs, fv_body)
     | Prim(ope, e1, e2) -> union (freevars e1, freevars e2);;

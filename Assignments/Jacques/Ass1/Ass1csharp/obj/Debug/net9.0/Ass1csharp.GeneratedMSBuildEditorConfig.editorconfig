@@ -8,10 +8,8 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Ass1csharp
-<<<<<<< HEAD
-build_property.ProjectDir = /Users/noale/Documents/5semester/Programmer som data/ProgrammerSomDataITU/Assignments/Jacques/Ass1/Ass1csharp/
-=======
 build_property.ProjectDir = /home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass1/Ass1csharp/
->>>>>>> f90567b9434e6ac888ca21db18b02b3edbe5a351
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.EffectiveAnalysisLevelStyle = 9.0
+build_property.EnableCodeStyleSeverity = 
