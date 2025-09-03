@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Program.fs" />
+    <Compile Include="teststuff.fs" />
+    <Compile Include="Intcomp1.fs" />
+    <Compile Include ="assignment1.fs"/>
+    <Compile Include ="assignment1part2.fs"/>
+  </ItemGroup>
+
+</Project>
