@@ -13,6 +13,7 @@ type expr =
   | Let  of (string * expr) list * expr   // CHANGED: multiple sequential bindings
   | Prim of string * expr * expr;;
 
+let testExpr = Let([("a", CstI 3); ("b", CstI 78); ("c", CstI 666)], Prim("+", Var "a", Var "b"))
 (* Some closed expressions: *)
 
 let rec lookup env x =
