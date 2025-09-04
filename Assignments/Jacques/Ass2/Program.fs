@@ -10,12 +10,12 @@ module Intcomp1
 type expr = 
   | CstI of int
   | Var of string
-  | Let  of (string * expr) list * expr   // CHANGED: multiple sequential bindings
+  | Let of string * expr * expr
   | Prim of string * expr * expr;;
 
 (* Some closed expressions: *)
 
-let e1 = Let([("z", CstI 17)], Prim("+", Var "z", Var "z"));;
+let e1 = Let("z", CstI 17, Prim("+", Var "z", Var "z"));;
 
 let e2 = Let("z", CstI 17, 
              Prim("+", Let("z", CstI 22, Prim("*", CstI 100, Var "z")),
@@ -30,6 +30,12 @@ let e4 = Prim("+", Prim("+", CstI 20, Let("z", CstI 17,
 
 let e5 = Prim("*", CstI 2, Let("x", CstI 3, Prim("+", Var "x", CstI 4)));;
 
+let e6 = Let("z", Var "x", Prim("+", Var "z", Var "x"))
+let e7 = Let("z", CstI 3, Let("y", Prim("+", Var "z", CstI 1), Prim("+", Var "z", Var "y")))
+let e8 = Let("z", Let("x", CstI 4, Prim("+", Var "x", CstI 5)), Prim("*", Var "z", CstI 2))
+let e9 = Let("z", CstI 3, Let("y", Prim("+", Var "z", CstI 1), Prim("+", Var "x", Var "y")))
+let e10 = Let("z", Prim("+", Let("x", CstI 4, Prim("+", Var "x", CstI 5)), Var "x"), Prim("*", Var "z", CstI 2))
+
 (* ---------------------------------------------------------------------- *)
 
 (* Evaluation of expressions with variables and bindings *)
@@ -43,18 +49,18 @@ let rec eval e (env : (string * int) list) : int =
     match e with
     | CstI i            -> i
     | Var x             -> lookup env x 
-    | Let (binds, ebody) ->
-      let env' =
-        List.fold (fun acc (x, erhs) ->
-              let v = eval erhs acc   
-              (x, v) :: acc) env binds
-      eval ebody env'
+    | Let(x, erhs, ebody) -> 
+      let xval = eval erhs env
+      let env1 = (x, xval) :: env 
+      eval ebody env1
     | Prim("+", e1, e2) -> eval e1 env + eval e2 env
     | Prim("*", e1, e2) -> eval e1 env * eval e2 env
     | Prim("-", e1, e2) -> eval e1 env - eval e2 env
     | Prim _            -> failwith "unknown primitive";;
 
 let run e = eval e [];;
+let res = List.map run [e1;e2;e3;e4;e5;e7]  (* e6 has free variables *)
+
 
 (* ---------------------------------------------------------------------- *)
 
@@ -82,7 +88,7 @@ let rec closedin (e : expr) (vs : string list) : bool =
 (* An expression is closed if it is closed in the empty environment *)
 
 let closed1 e = closedin e [];;
-
+let _ = List.map closed1 [e1;e2;e3;e4;e5;e6;e7;e8;e9;e10]
 
 (* ---------------------------------------------------------------------- *)
 
@@ -116,32 +122,32 @@ let rec nsubst (e : expr) (env : (string * expr) list) : expr =
 
 (* Some expressions with free variables: *)
 
-let e6 = Prim("+", Var "y", Var "z");;
+let e6s0 = Prim("+", Var "y", Var "z");;
 
-let e6s1 = nsubst e6 [("z", CstI 17)];;
+let e6s1 = nsubst e6s0 [("z", CstI 17)];;
 
-let e6s2 = nsubst e6 [("z", Prim("-", CstI 5, CstI 4))];;
+let e6s2 = nsubst e6s0 [("z", Prim("-", CstI 5, CstI 4))];;
 
-let e6s3 = nsubst e6 [("z", Prim("+", Var "z", Var "z"))];;
+let e6s3 = nsubst e6s0 [("z", Prim("+", Var "z", Var "z"))];;
 
 // Shows that only z outside the Let gets substituted:
-let e7 = Prim("+", Let("z", CstI 22, Prim("*", CstI 5, Var "z")),
+let e7s0 = Prim("+", Let("z", CstI 22, Prim("*", CstI 5, Var "z")),
                    Var "z");;
 
-let e7s1 = nsubst e7 [("z", CstI 100)];;
+let e7s1 = nsubst e7s0 [("z", CstI 100)];;
 
 // Shows that only the z in the Let rhs gets substituted
-let e8 = Let("z", Prim("*", CstI 22, Var "z"), Prim("*", CstI 5, Var "z"));;
+let e8s0 = Let("z", Prim("*", CstI 22, Var "z"), Prim("*", CstI 5, Var "z"));;
 
-let e8s1 = nsubst e8 [("z", CstI 100)];;
+let e8s1 = nsubst e8s0 [("z", CstI 100)];;
 
 // Shows (wrong) capture of free variable z under the let:
-let e9 = Let("z", CstI 22, Prim("*", Var "y", Var "z"));;
+let e9s0 = Let("z", CstI 22, Prim("*", Var "y", Var "z"));;
 
-let e9s1 = nsubst e9 [("y", Var "z")];;
+let e9s1 = nsubst e9s0 [("y", Var "z")];;
 
 // 
-let e9s2 = nsubst e9 [("z", Prim("-", CstI 5, CstI 4))];;
+let e9s2 = nsubst e9s0 [("z", Prim("-", CstI 5, CstI 4))];;
 
 let newVar : string -> string = 
     let n = ref 0
@@ -168,13 +174,13 @@ let e6s3a = subst e6 [("z", Prim("+", Var "z", Var "z"))];;
 
 
 // Shows renaming of bound variable z (to z1)
-let e7s1a = subst e7 [("z", CstI 100)];;
+let e7s1a = subst e7s0 [("z", CstI 100)];;
 
 // Shows renaming of bound variable z (to z2)
-let e8s1a = subst e8 [("z", CstI 100)];;
+let e8s1a = subst e8s0 [("z", CstI 100)];;
 
 // Shows renaming of bound variable z (to z3), avoiding capture of free z
-let e9s1a = subst e9 [("y", Var "z")];;
+let e9s1a = subst e9s0 [("y", Var "z")];;
 
 (* ---------------------------------------------------------------------- *)
 
@@ -202,30 +208,18 @@ let rec minus (xs, ys) =
 
 (* Find all variables that occur free in expression e *)
 
-let lst = [2;4;6]
-let result : int = lst |> List.fold (fun acc x -> x + acc) 0;;
-
 let rec freevars e : string list =
     match e with
     | CstI i -> []
     | Var x  -> [x]
-    | Let(binds, body) ->
-      let (fvs, bound) =
-        List.fold (fun (acc_fvs, acc_bound) (x, erhs) ->
-                      // free vars of rhs, remove already bound ones
-                      let fv_rhs = minus (freevars erhs, acc_bound)
-                      // accumulate and extend bound set
-                      (union(acc_fvs, fv_rhs), x::acc_bound))
-                  ([], []) binds
-      // body free vars minus all bound names
-      let fv_body = minus (freevars body, bound)
-      union(fvs, fv_body)
+    | Let(x, erhs, ebody) -> 
+          union (freevars erhs, minus (freevars ebody, [x]))
     | Prim(ope, e1, e2) -> union (freevars e1, freevars e2);;
 
 (* Alternative definition of closed *)
 
 let closed2 e = (freevars e = []);;
-
+let _ = List.map closed2 [e1;e2;e3;e4;e5;e6;e7;e8;e9;e10]
 
 (* ---------------------------------------------------------------------- *)
 
@@ -252,12 +246,9 @@ let rec tcomp (e : expr) (cenv : string list) : texpr =
     match e with
     | CstI i -> TCstI i
     | Var x  -> TVar (getindex cenv x)
-    | Let(binds, ebody) -> 
-      match binds with
-      | [] -> tcomp ebody cenv
-      | (x, erhs) :: rest ->
-        let ebody' = Let(rest, ebody)
-        TLet(tcomp erhs cenv, tcomp ebody' (x :: cenv))
+    | Let(x, erhs, ebody) -> 
+      let cenv1 = x :: cenv 
+      TLet(tcomp erhs cenv, tcomp ebody cenv1)
     | Prim(ope, e1, e2) -> TPrim(ope, tcomp e1 cenv, tcomp e2 cenv);;
 
 (* Evaluation of target expressions with variable indexes.  The
@@ -266,7 +257,7 @@ let rec tcomp (e : expr) (cenv : string list) : texpr =
 let rec teval (e : texpr) (renv : int list) : int =
     match e with
     | TCstI i -> i
-    | TVar n  -> List.nth renv n
+    | TVar n  -> List.item n renv
     | TLet(erhs, ebody) -> 
       let xval = teval erhs renv
       let renv1 = xval :: renv 
@@ -343,7 +334,7 @@ let rec seval (inss : sinstr list) (stack : int list) =
     | ([], v :: _) -> v
     | ([], [])     -> failwith "seval: no result on stack"
     | (SCstI i :: insr,          stk) -> seval insr (i :: stk) 
-    | (SVar i  :: insr,          stk) -> seval insr (List.nth stk i :: stk) 
+    | (SVar i  :: insr,          stk) -> seval insr (List.item i stk :: stk) 
     | (SAdd    :: insr, i2::i1::stkr) -> seval insr (i1+i2 :: stkr)
     | (SSub    :: insr, i2::i1::stkr) -> seval insr (i1-i2 :: stkr)
     | (SMul    :: insr, i2::i1::stkr) -> seval insr (i1*i2 :: stkr)
@@ -387,7 +378,6 @@ let intsToFile (inss : int list) (fname : string) =
     System.IO.File.WriteAllText(fname, text);;
 
 (* -----------------------------------------------------------------  *)
-
 let testSinsr: sinstr list = [SCstI 8; SCstI 10; SAdd]
 (*2.4*)
 
