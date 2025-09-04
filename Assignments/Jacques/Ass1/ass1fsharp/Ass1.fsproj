@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <Compile Include="Program.fs" />
-    <Compile Include="teststuff.fs" />
     <Compile Include="Intcomp1.fs" />
     <Compile Include ="assignment1part1.fs"/>
     <Compile Include ="assignment1part2.fs"/>

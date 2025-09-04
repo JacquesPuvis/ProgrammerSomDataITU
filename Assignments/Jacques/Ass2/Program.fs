@@ -379,6 +379,8 @@ let intsToFile (inss : int list) (fname : string) =
 
 (* -----------------------------------------------------------------  *)
 let testSinsr: sinstr list = [SCstI 8; SCstI 10; SAdd]
+let testExpr = Let("z",CstI 17, Prim("+",Var "z", Var "z"));;
+
 (*2.4*)
 
 let scst  = 0
@@ -402,3 +404,12 @@ let rec assemble (sl : sinstr list) : int list =
       | SMul   -> smul :: assemble slx
       | SPop   -> spop :: assemble slx
       | SSwap  -> sswap :: assemble slx
+
+let assembleToFile (code : sinstr list) (outfile : string) : unit =
+    let bytes = assemble code
+    intsToFile bytes outfile
+
+
+let exprToBytecode (e : expr) : int list =
+    assemble (scomp e [])
+

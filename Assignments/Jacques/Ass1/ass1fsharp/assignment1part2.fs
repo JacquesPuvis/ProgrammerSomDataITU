@@ -33,6 +33,7 @@ let rec eval e (env : (string * int) list) : int =
         List.fold (fun acc (x, erhs) ->
               let v = eval erhs acc   
               (x, v) :: acc) env binds
+
       eval ebody env'
     | Prim("+", e1, e2) -> eval e1 env + eval e2 env
     | Prim("*", e1, e2) -> eval e1 env * eval e2 env
