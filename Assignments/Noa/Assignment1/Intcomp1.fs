@@ -392,3 +392,8 @@ let intsToFile (inss : int list) (fname : string) =
     System.IO.File.WriteAllText(fname, text);;
 
 (* -----------------------------------------------------------------  *)
+
+//2.4
+let assemble (sl : sinstr list) : int list =
+    
+
