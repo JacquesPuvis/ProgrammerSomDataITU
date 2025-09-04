@@ -99,11 +99,17 @@ let rec simplify  (a : aexpr) : aexpr =
         | a, b -> Sub(a, b)
      
 
+let rec diff (v:string) (a:aexpr) : aexpr =
+    match a with
+    | CstI _ -> CstI(0)
+    | Var(x) -> if x = v then CstI(1) else CstI(0)
+    | Add(x, y) -> Add(diff v x, diff v y)
+    | Sub(x, y) -> Sub(diff v x, diff v y)
+    | Mul(x, y) -> Add(Mul(diff v x, y), Mul(x, diff v y))
   
-  
-  
-  
-  
+// Exercise 1.4
+
+
   
   
   
