@@ -393,4 +393,21 @@ let intsToFile (inss : int list) (fname : string) =
 
 (* -----------------------------------------------------------------  *)
 
+//2.4
+let rec assemble (sl : sinstr list) : int list =
+  match sl with
+  | [] -> []
+  | head :: slx ->
+      match head with
+      | SCstI n -> scst :: n :: assemble slx
+      | SVar v -> svar :: v :: assemble slx
+      | SAdd   -> sadd :: assemble slx
+      | SSub   -> ssub :: assemble slx
+      | SMul   -> smul :: assemble slx
+      | SPop   -> spop :: assemble slx
+      | SSwap  -> sswap :: assemble slx
+
+
+let compileToBytecode (e : expr) : int list =
+    e |> scomp [] |> assemble  
 
