@@ -1,10 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "sUFMW8oCqt8=",
+  "dgSpecHash": "coSfZUysLnc=",
   "success": true,
   "projectFilePath": "/Users/noale/Documents/5semester/Programmer som data/ProgrammerSomDataITU/Assignments/Noa/Assignment2/Assignment2/Assignment2.fsproj",
   "expectedPackageFiles": [
-    "/Users/noale/.nuget/packages/fsharp.core/8.0.403/fsharp.core.8.0.403.nupkg.sha512"
+    "/Users/noale/.nuget/packages/fsharp.core/9.0.201/fsharp.core.9.0.201.nupkg.sha512",
+    "/Users/noale/.nuget/packages/microsoft.netcore.app.ref/8.0.13/microsoft.netcore.app.ref.8.0.13.nupkg.sha512",
+    "/Users/noale/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.13/microsoft.aspnetcore.app.ref.8.0.13.nupkg.sha512",
+    "/Users/noale/.nuget/packages/microsoft.netcore.app.host.osx-arm64/8.0.13/microsoft.netcore.app.host.osx-arm64.8.0.13.nupkg.sha512"
   ],
   "logs": []
 }

@@ -394,6 +394,8 @@ let intsToFile (inss : int list) (fname : string) =
 (* -----------------------------------------------------------------  *)
 
 //2.4
+let scst, svar, sadd, ssub, smul, spop, sswap = 0, 1, 2, 3, 4, 5, 6
+
 let rec assemble (sl : sinstr list) : int list =
   match sl with
   | [] -> []
@@ -408,6 +410,6 @@ let rec assemble (sl : sinstr list) : int list =
       | SSwap  -> sswap :: assemble slx
 
 
-let compileToBytecode (e : expr) : int list =
-    e |> scomp [] |> assemble  
+let compileToBytecode (fileName : string) (e : expr) : unit =
+    e |> scomp [] |> assemble |> fun bc -> intsToFile bc fileName
 
