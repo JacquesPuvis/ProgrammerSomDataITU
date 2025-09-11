@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "umxzeLRrTVw=",
+  "success": true,
+  "projectFilePath": "/Users/cecilieelkjaer/Desktop/UNI/5.Sem/3.PRDA/ProgrammerSomDataITU/Assignments/Cecilie/A1/A1-FSharp/Ass1.fsproj",
+  "expectedPackageFiles": [
+    "/Users/cecilieelkjaer/.nuget/packages/fsharp.core/9.0.100/fsharp.core.9.0.100.nupkg.sha512",
+    "/Users/cecilieelkjaer/.nuget/packages/microsoft.netcore.app.ref/8.0.11/microsoft.netcore.app.ref.8.0.11.nupkg.sha512",
+    "/Users/cecilieelkjaer/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.11/microsoft.aspnetcore.app.ref.8.0.11.nupkg.sha512",
+    "/Users/cecilieelkjaer/.nuget/packages/microsoft.netcore.app.host.osx-x64/8.0.11/microsoft.netcore.app.host.osx-x64.8.0.11.nupkg.sha512"
+  ],
+  "logs": []
+}

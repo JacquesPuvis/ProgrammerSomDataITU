@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass1/Ass1csharp/Ass1csharp.csproj": {}
+    "/Users/cecilieelkjaer/Desktop/UNI/5.Sem/3.PRDA/ProgrammerSomDataITU/Assignments/Jacques/Ass1/Ass1csharp/Ass1csharp.csproj": {}
   },
   "projects": {
-    "/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass1/Ass1csharp/Ass1csharp.csproj": {
+    "/Users/cecilieelkjaer/Desktop/UNI/5.Sem/3.PRDA/ProgrammerSomDataITU/Assignments/Jacques/Ass1/Ass1csharp/Ass1csharp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass1/Ass1csharp/Ass1csharp.csproj",
+        "projectUniqueName": "/Users/cecilieelkjaer/Desktop/UNI/5.Sem/3.PRDA/ProgrammerSomDataITU/Assignments/Jacques/Ass1/Ass1csharp/Ass1csharp.csproj",
         "projectName": "Ass1csharp",
-        "projectPath": "/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass1/Ass1csharp/Ass1csharp.csproj",
-        "packagesPath": "/home/jacquespuvis/.nuget/packages/",
-        "outputPath": "/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass1/Ass1csharp/obj/",
+        "projectPath": "/Users/cecilieelkjaer/Desktop/UNI/5.Sem/3.PRDA/ProgrammerSomDataITU/Assignments/Jacques/Ass1/Ass1csharp/Ass1csharp.csproj",
+        "packagesPath": "/Users/cecilieelkjaer/.nuget/packages/",
+        "outputPath": "/Users/cecilieelkjaer/Desktop/UNI/5.Sem/3.PRDA/ProgrammerSomDataITU/Assignments/Jacques/Ass1/Ass1csharp/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/jacquespuvis/.nuget/NuGet/NuGet.Config"
+          "/Users/cecilieelkjaer/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -36,9 +36,8 @@
         "restoreAuditProperties": {
           "enableAudit": "true",
           "auditLevel": "low",
-          "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.200"
+          "auditMode": "all"
+        }
       },
       "frameworks": {
         "net9.0": {
@@ -59,7 +58,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.203/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/Users/cecilieelkjaer/.dotnet/sdk/9.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
