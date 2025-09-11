@@ -7,7 +7,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7259b549-79a4-4cbd-9a4e-e275897b82b9" name="Changes" comment="" />
+    <list default="true" id="7259b549-79a4-4cbd-9a4e-e275897b82b9" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../Assignment2/Assignment2/obj/Debug/net8.0/Assignment2.AssemblyInfo.fs" beforeDir="false" afterPath="$PROJECT_DIR$/../Assignment2/Assignment2/obj/Debug/net8.0/Assignment2.AssemblyInfo.fs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Assignment2/Assignment2/obj/Debug/net8.0/Assignment2.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../Assignment2/Assignment2/obj/Debug/net8.0/Assignment2.AssemblyInfoInputs.cache" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -67,6 +70,7 @@
       <updated>1756373083415</updated>
       <workItem from="1756373084454" duration="2589000" />
       <workItem from="1756895901265" duration="6733000" />
+      <workItem from="1757581304673" duration="43000" />
     </task>
     <servers />
   </component>
