@@ -5,12 +5,19 @@
 
 (* Object language expressions with variable bindings and nested scope *)
 
+(* Programming language concepts for software developers, 2012-02-17 *)
+
+(* Evaluation, checking, and compilation of object language expressions *)
+(* Stack machines for expression evaluation                             *) 
+
+(* Object language expressions with variable bindings and nested scope *)
+
 module Intcomp1
 
 type expr = 
   | CstI of int
   | Var of string
-  | Let of (string * expr) list * expr (* CHANGED *)
+  | Let of string * expr * expr
   | Prim of string * expr * expr;;
 
 (* Some closed expressions: *)
@@ -49,12 +56,10 @@ let rec eval e (env : (string * int) list) : int =
     match e with
     | CstI i            -> i
     | Var x             -> lookup env x 
-    | Let (bindings, body) ->
-        let env' =
-            List.fold (fun acc (x, rhs) ->
-                let v = eval rhs acc
-                (x, v) :: acc) env bindings
-        eval body env'
+    | Let(x, erhs, ebody) -> 
+      let xval = eval erhs env
+      let env1 = (x, xval) :: env 
+      eval ebody env1
     | Prim("+", e1, e2) -> eval e1 env + eval e2 env
     | Prim("*", e1, e2) -> eval e1 env * eval e2 env
     | Prim("-", e1, e2) -> eval e1 env - eval e2 env
@@ -214,17 +219,8 @@ let rec freevars e : string list =
     match e with
     | CstI i -> []
     | Var x  -> [x]
-    | Let(binds, body) ->
-      let (fvs, bound) =
-        List.fold (fun (acc_fvs, acc_bound) (x, erhs) ->
-                      // free vars of rhs, remove already bound ones
-                      let fv_rhs = minus (freevars erhs, acc_bound)
-                      // accumulate and extend bound set
-                      (union(acc_fvs, fv_rhs), x::acc_bound))
-                  ([], []) binds
-      // body free vars minus all bound names
-      let fv_body = minus (freevars body, bound)
-      union(fvs, fv_body)
+    | Let(x, erhs, ebody) -> 
+          union (freevars erhs, minus (freevars ebody, [x]))
     | Prim(ope, e1, e2) -> union (freevars e1, freevars e2);;
 
 (* Alternative definition of closed *)
@@ -257,12 +253,9 @@ let rec tcomp (e : expr) (cenv : string list) : texpr =
     match e with
     | CstI i -> TCstI i
     | Var x  -> TVar (getindex cenv x)
-    | Let(binds, ebody) -> 
-      match binds with
-      | [] -> tcomp ebody cenv
-      | (x, erhs) :: rest ->
-        let ebody' = Let(rest, ebody)
-        TLet(tcomp erhs cenv, tcomp ebody' (x :: cenv))
+    | Let(x, erhs, ebody) -> 
+      let cenv1 = x :: cenv 
+      TLet(tcomp erhs cenv, tcomp ebody cenv1)
     | Prim(ope, e1, e2) -> TPrim(ope, tcomp e1 cenv, tcomp e2 cenv);;
 
 (* Evaluation of target expressions with variable indexes.  The
@@ -391,6 +384,7 @@ let intsToFile (inss : int list) (fname : string) =
     let text = String.concat " " (List.map string inss)
     System.IO.File.WriteAllText(fname, text);;
 
+(* -----------------------------------------------------------------  *)
 (* -----------------------------------------------------------------  *)
 
 //2.4
