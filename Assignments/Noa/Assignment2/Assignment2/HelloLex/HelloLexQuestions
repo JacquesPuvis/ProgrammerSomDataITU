@@ -1,0 +1,18 @@
+Opgave 1:
+What are the regular expressions involved, and which semantic values are they associated with?
+
+['0'-'9'], it only recognizes numbers.
+Semantic valure: returns the matched digit string
+_
+Returns an error
+
+Opgave 2:
+• Generate the lexer out of the specification using a command prompt. Which additional file is generated during the process?
+• How many states are there by the automaton of the lexer? 
+
+command prompt: dotnet ~/fsharp/fslex.dll --unicode hello.fsl 
+Additional files: hello.fs hello.fsi
+Number of states: 3 states
+
+Opgave 6:
+we have defined the regex recognize digits with a . in between, but not a ,

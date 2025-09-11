@@ -2,7 +2,7 @@
   "version": 3,
   "targets": {
     "net8.0": {
-      "FSharp.Core/9.0.201": {
+      "FSharp.Core/8.0.403": {
         "type": "package",
         "compile": {
           "lib/netstandard2.1/FSharp.Core.dll": {
@@ -59,15 +59,15 @@
     }
   },
   "libraries": {
-    "FSharp.Core/9.0.201": {
-      "sha512": "Ozq4T0ISTkqTYJ035XW/JkdDDaXofbykvfyVwkjLSqaDZ/4uNXfpf92cjcMI9lf9CxWqmlWHScViPh/4AvnWcw==",
+    "FSharp.Core/8.0.403": {
+      "sha512": "t1Pvv2++3zMQKKNuiQc1Lz4TCdaBajgG4mLhOE8AoFzborHQ/JbjIaJr6Mrq8m2z15KLu4r6Qz7E3oeACpljTg==",
       "type": "package",
-      "path": "fsharp.core/9.0.201",
+      "path": "fsharp.core/8.0.403",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
-        "fsharp.core.9.0.201.nupkg.sha512",
+        "fsharp.core.8.0.403.nupkg.sha512",
         "fsharp.core.nuspec",
         "lib/netstandard2.0/FSharp.Core.dll",
         "lib/netstandard2.0/FSharp.Core.xml",
@@ -104,7 +104,7 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "FSharp.Core >= 9.0.201"
+      "FSharp.Core >= 8.0.403"
     ]
   },
   "packageFolders": {
@@ -119,7 +119,6 @@
       "packagesPath": "/Users/noale/.nuget/packages/",
       "outputPath": "/Users/noale/Documents/5semester/Programmer som data/ProgrammerSomDataITU/Assignments/Noa/Assignment2/Assignment2/obj/",
       "projectStyle": "PackageReference",
-      "UsingMicrosoftNETSdk": false,
       "configFilePaths": [
         "/Users/noale/.nuget/NuGet/NuGet.Config"
       ],
@@ -127,7 +126,7 @@
         "net8.0"
       ],
       "sources": {
-        "/Users/noale/.dotnet/sdk/9.0.200/FSharp/library-packs": {},
+        "/usr/local/share/dotnet/sdk/8.0.404/FSharp/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -149,7 +148,7 @@
           "FSharp.Core": {
             "include": "Runtime, Compile, Build, Native, Analyzers, BuildTransitive",
             "target": "Package",
-            "version": "[9.0.201, )",
+            "version": "[8.0.403, )",
             "generatePathProperty": true
           }
         },
@@ -164,26 +163,12 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[8.0.13, 8.0.13]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Host.osx-arm64",
-            "version": "[8.0.13, 8.0.13]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[8.0.13, 8.0.13]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/Users/noale/.dotnet/sdk/9.0.200/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.404/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
