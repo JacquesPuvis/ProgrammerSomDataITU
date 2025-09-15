@@ -1,8 +1,6 @@
 (* This file expects the Expr example to be loaded in interactive *)
 
-
 open (*Microsoft.*)FSharp.Text
-open Absyn
 
 let str = "2+4"
 let lexbuf =  Lexing.LexBuffer<char>.FromString(str)

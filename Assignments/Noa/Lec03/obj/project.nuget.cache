@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "V5w+8fYZZtk=",
+  "success": true,
+  "projectFilePath": "/Users/noale/Documents/5semester/Programmer som data/ProgrammerSomDataITU/Assignments/Noa/Lec03/Lec03.fsproj",
+  "expectedPackageFiles": [
+    "/Users/noale/.nuget/packages/fsharp.core/8.0.403/fsharp.core.8.0.403.nupkg.sha512"
+  ],
+  "logs": []
+}

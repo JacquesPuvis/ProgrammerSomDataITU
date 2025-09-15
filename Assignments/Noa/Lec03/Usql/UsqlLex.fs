@@ -12,7 +12,7 @@ open System.Collections.Generic      (* for Dictionary *)
 open (*Microsoft.*)FSharp.Text.Lexing
 open UsqlPar;
 
-let lexemeAsString lexbuf = 
+let lexemeAsString lexbuf =
     LexBuffer<char>.LexemeString lexbuf
 
 (* Distinguish keywords from identifiers using function `keyword' below: *)
@@ -29,7 +29,7 @@ let _ = List.iter keywords.Add
           ("true",     CSTBOOL true);
           ("where",    WHERE)]
 
-let keyword s =
+let keyword s = 
     if keywords.ContainsKey(s) then keywords.Item(s)
     else NAME s
 
