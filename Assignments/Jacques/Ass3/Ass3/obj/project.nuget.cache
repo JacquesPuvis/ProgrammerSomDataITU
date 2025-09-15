@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "bYX4y1+3fK8=",
+  "success": true,
+  "projectFilePath": "/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass3/Ass3/Ass3.fsproj",
+  "expectedPackageFiles": [
+    "/home/jacquespuvis/.nuget/packages/fsharp.core/9.0.202/fsharp.core.9.0.202.nupkg.sha512",
+    "/home/jacquespuvis/.nuget/packages/fsharp.idioms/1.4.20/fsharp.idioms.1.4.20.nupkg.sha512",
+    "/home/jacquespuvis/.nuget/packages/fslexfsyacc.runtime/1.4.0/fslexfsyacc.runtime.1.4.0.nupkg.sha512",
+    "/home/jacquespuvis/.nuget/packages/fslexyacc/11.3.0/fslexyacc.11.3.0.nupkg.sha512",
+    "/home/jacquespuvis/.nuget/packages/fslexyacc.runtime/11.3.0/fslexyacc.runtime.11.3.0.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,7 +1,8 @@
 (* This file expects the Expr example to be loaded in interactive *)
 
 
-open (*Microsoft.*)FSharp.Text
+open FSharp.Text
+open FSharp.Text.Lexing
 open Absyn
 
 let str = "2+4"
