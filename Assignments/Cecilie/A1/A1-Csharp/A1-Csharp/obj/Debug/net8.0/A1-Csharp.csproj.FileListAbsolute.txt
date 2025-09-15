@@ -1,0 +1,15 @@
+/Users/cecilieelkjaer/Desktop/UNI/5.Sem/3.PRDA/ProgrammerSomDataITU/Assignments/Cecilie/A1/A1-Csharp/A1-Csharp/bin/Debug/net8.0/A1-Csharp
+/Users/cecilieelkjaer/Desktop/UNI/5.Sem/3.PRDA/ProgrammerSomDataITU/Assignments/Cecilie/A1/A1-Csharp/A1-Csharp/bin/Debug/net8.0/A1-Csharp.deps.json
+/Users/cecilieelkjaer/Desktop/UNI/5.Sem/3.PRDA/ProgrammerSomDataITU/Assignments/Cecilie/A1/A1-Csharp/A1-Csharp/bin/Debug/net8.0/A1-Csharp.runtimeconfig.json
+/Users/cecilieelkjaer/Desktop/UNI/5.Sem/3.PRDA/ProgrammerSomDataITU/Assignments/Cecilie/A1/A1-Csharp/A1-Csharp/bin/Debug/net8.0/A1-Csharp.dll
+/Users/cecilieelkjaer/Desktop/UNI/5.Sem/3.PRDA/ProgrammerSomDataITU/Assignments/Cecilie/A1/A1-Csharp/A1-Csharp/bin/Debug/net8.0/A1-Csharp.pdb
+/Users/cecilieelkjaer/Desktop/UNI/5.Sem/3.PRDA/ProgrammerSomDataITU/Assignments/Cecilie/A1/A1-Csharp/A1-Csharp/obj/Debug/net8.0/A1-Csharp.GeneratedMSBuildEditorConfig.editorconfig
+/Users/cecilieelkjaer/Desktop/UNI/5.Sem/3.PRDA/ProgrammerSomDataITU/Assignments/Cecilie/A1/A1-Csharp/A1-Csharp/obj/Debug/net8.0/A1-Csharp.AssemblyInfoInputs.cache
+/Users/cecilieelkjaer/Desktop/UNI/5.Sem/3.PRDA/ProgrammerSomDataITU/Assignments/Cecilie/A1/A1-Csharp/A1-Csharp/obj/Debug/net8.0/A1-Csharp.AssemblyInfo.cs
+/Users/cecilieelkjaer/Desktop/UNI/5.Sem/3.PRDA/ProgrammerSomDataITU/Assignments/Cecilie/A1/A1-Csharp/A1-Csharp/obj/Debug/net8.0/A1-Csharp.csproj.CoreCompileInputs.cache
+/Users/cecilieelkjaer/Desktop/UNI/5.Sem/3.PRDA/ProgrammerSomDataITU/Assignments/Cecilie/A1/A1-Csharp/A1-Csharp/obj/Debug/net8.0/A1-Csharp.sourcelink.json
+/Users/cecilieelkjaer/Desktop/UNI/5.Sem/3.PRDA/ProgrammerSomDataITU/Assignments/Cecilie/A1/A1-Csharp/A1-Csharp/obj/Debug/net8.0/A1-Csharp.dll
+/Users/cecilieelkjaer/Desktop/UNI/5.Sem/3.PRDA/ProgrammerSomDataITU/Assignments/Cecilie/A1/A1-Csharp/A1-Csharp/obj/Debug/net8.0/refint/A1-Csharp.dll
+/Users/cecilieelkjaer/Desktop/UNI/5.Sem/3.PRDA/ProgrammerSomDataITU/Assignments/Cecilie/A1/A1-Csharp/A1-Csharp/obj/Debug/net8.0/A1-Csharp.pdb
+/Users/cecilieelkjaer/Desktop/UNI/5.Sem/3.PRDA/ProgrammerSomDataITU/Assignments/Cecilie/A1/A1-Csharp/A1-Csharp/obj/Debug/net8.0/A1-Csharp.genruntimeconfig.cache
+/Users/cecilieelkjaer/Desktop/UNI/5.Sem/3.PRDA/ProgrammerSomDataITU/Assignments/Cecilie/A1/A1-Csharp/A1-Csharp/obj/Debug/net8.0/ref/A1-Csharp.dll
