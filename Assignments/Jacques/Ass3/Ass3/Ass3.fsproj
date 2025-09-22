@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Absyn.fs" />
+    <FsYacc Include="ExprPar.fsy" />
+    <Compile Include="ExprPar.fs" />
+    <FsLex Include="ExprLex.fsl" />
+    <Compile Include="ExprLex.fs" />
+    <Compile Include="Parse.fs" />
+
+    <Compile Include="Expr.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="/home/jacquespuvis/fsharp/FsLexYacc.Runtime.dll" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="FslexFsyacc.Runtime" Version="1.4.0" />
+    <PackageReference Include="FsLexYacc" Version="11.3.0" />
+</ItemGroup>
+
+</Project>
