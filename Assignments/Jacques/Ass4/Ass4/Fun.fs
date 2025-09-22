@@ -60,10 +60,10 @@ let rec eval (e : expr) (env : value env) : int =
       match fClosure with
       | Closure (f, x, fBody, fDeclEnv) ->
 
-        let xList = x
-        let evalList = List.map (fun e -> Int(eval e env)) eArg
-        let paramBindings = List.zip xList evalList
-        let fBodyEnv = (f, fClosure) :: (paramBindings @ fDeclEnv)
+        let xList = x // xList is the list of parameters
+        let evalList = List.map (fun e -> Int(eval e env)) eArg // evalList is the evaluation of the arguments
+        let paramBindings = List.zip xList evalList // ParamBindings uses List.Zip to match each parameter to an evaluatoin
+        let fBodyEnv = (f, fClosure) :: (paramBindings @ fDeclEnv) // Concatenate paramBindings to the env
 
 
         eval fBody fBodyEnv
