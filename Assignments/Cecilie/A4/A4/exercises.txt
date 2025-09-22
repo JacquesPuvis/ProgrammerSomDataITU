@@ -1,7 +1,9 @@
-## Exercise 4.2
+## Exercise 4.1: 
+
+
+## Exercise 4.2: 
     1: run (fromString "let sum n = if n = 0 then 0 else n + sum(n-1) in sum 1000 end");;
     2: run (fromString "let powEight n = if n = 0 then 1 else 3 * powEight(n-1) in powEight 8 end");;
     3: run (fromString "let pow3 n = if n = 0 then 1 else 3 * pow3(n - 1) in let sumPower n = if n = 
             0 then pow3(0) else pow3(n) + sumPower(n - 1) in sumPower 11 end end");; 
-    4: run (fromString "let pow n = if n = 0 then 1 else n * pow(n - 1) in let sumPow n = if n = 1 th
-            en pow(1) else pow(n) + sumPow(n-1) in sumPow 10 end end");;
+    4: run (fromString "let sumPow n = if n = 0 then 0 else n  n  n  n  n  n  n * n + sumPow (n - 1) in sumPow 10 end");;
