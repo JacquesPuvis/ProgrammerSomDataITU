@@ -28,14 +28,14 @@ Added a alias for "dotnet ~/fsharp/fslex.dll --unicode", so instead of writing i
 it can now be written with only "fslex hello3.fsl"
 
 ### Question 6: Consider the 3 examples of input provided at the prompt and the result. Explain why the results are expected behaviour from the lexer.
-1: Below is recognized correctly because the lexer recognizes two numbers with the regular expression defined. \
+1: Below is recognized correctly because the lexer can take both several digits and decimals with the regular expression defined. \
 % dotnet bin/Debug/net8.0/hello3.dll \
 Hello World from FsLex! \
 Please pass a digit: \
 34 \
 The lexer recognizes 34 
 
-2: Below is also recognized correctly because the lexer recognizes floats, given with at ".". \
+2: Below is also recognized correctly because the lexer can take both several digits and decimals given with at ".". \
 % dotnet bin/Debug/net8.0/hello3.dll \
 Hello World from FsLex! \
 Please pass a digit:\
