@@ -47,6 +47,8 @@ rule Token = parse
   | "<>"            { NE }
   | '>'             { GT }
   | '<'             { LT }
+  | "&&"            { ANDAND }
+  | "||"            { OROR }
   | ">="            { GE }
   | "<="            { LE }
   | '+'             { PLUS }                     
