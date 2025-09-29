@@ -144,3 +144,27 @@ AtExpr:
  ..
  ..
   | FUN NAME RARROW Expr                { Fun($2, $4)            }
+
+
+HigherFun.fsl
+
+type value = 
+..
+| Clos of string * expr * value env       (* (x, body, declEnv)*)
+
+
+
+
+let rec eval (e : expr) (env : value env) : value =
+    match e with
+    ..
+    | Fun (x, body) -> Clos(x,body, env) (* THIS LINE *)
+    | Call(eFun, eArg) -> 
+      let fClosure = eval eFun env  (* Different from Fun.fs - to enable first class functions *)
+      match fClosure with
+      ..
+      | Clos(x, body, declEnv) ->  (* THIS SEGMENT *)
+        let xVal = eval eArg env
+        let callEnv = (x, xVal) :: declEnv
+        in eval body callEnv
+      ..
