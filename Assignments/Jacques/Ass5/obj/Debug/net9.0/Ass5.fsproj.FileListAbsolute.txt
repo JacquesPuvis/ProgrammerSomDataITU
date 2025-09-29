@@ -1,0 +1,5 @@
+/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass5/obj/Debug/net9.0/Ass5.fsproj.AssemblyReference.cache
+/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass5/obj/Debug/net9.0/Ass5.AssemblyInfoInputs.cache
+/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass5/obj/Debug/net9.0/Ass5.AssemblyInfo.fs
+/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass5/obj/Debug/net9.0/Ass5.fsproj.CoreCompileInputs.cache
+/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass5/obj/Debug/net9.0/Ass5.sourcelink.json

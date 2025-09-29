@@ -1,0 +1,15 @@
+/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass5csharp/Ass5csharp/bin/Debug/net9.0/Ass5csharp
+/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass5csharp/Ass5csharp/bin/Debug/net9.0/Ass5csharp.deps.json
+/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass5csharp/Ass5csharp/bin/Debug/net9.0/Ass5csharp.runtimeconfig.json
+/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass5csharp/Ass5csharp/bin/Debug/net9.0/Ass5csharp.dll
+/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass5csharp/Ass5csharp/bin/Debug/net9.0/Ass5csharp.pdb
+/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass5csharp/Ass5csharp/obj/Debug/net9.0/Ass5csharp.GeneratedMSBuildEditorConfig.editorconfig
+/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass5csharp/Ass5csharp/obj/Debug/net9.0/Ass5csharp.AssemblyInfoInputs.cache
+/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass5csharp/Ass5csharp/obj/Debug/net9.0/Ass5csharp.AssemblyInfo.cs
+/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass5csharp/Ass5csharp/obj/Debug/net9.0/Ass5csharp.csproj.CoreCompileInputs.cache
+/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass5csharp/Ass5csharp/obj/Debug/net9.0/Ass5csharp.sourcelink.json
+/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass5csharp/Ass5csharp/obj/Debug/net9.0/Ass5csharp.dll
+/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass5csharp/Ass5csharp/obj/Debug/net9.0/refint/Ass5csharp.dll
+/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass5csharp/Ass5csharp/obj/Debug/net9.0/Ass5csharp.pdb
+/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass5csharp/Ass5csharp/obj/Debug/net9.0/Ass5csharp.genruntimeconfig.cache
+/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass5csharp/Ass5csharp/obj/Debug/net9.0/ref/Ass5csharp.dll

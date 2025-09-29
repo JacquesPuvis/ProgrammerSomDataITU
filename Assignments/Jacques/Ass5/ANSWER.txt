@@ -1,0 +1,146 @@
+HELLO MR LADEGAARD
+ENJOY THIS ASSIGNMENT
+
+
+## 5.1 A
+
+let merge (xs: int list) (ys: int list) =
+    [xs; ys] |> List.concat |> List.sort
+
+
+
+
+ ## 5.1 B
+
+class Slay
+{
+    static int[] merge(int[] xs, int[] ys)
+    {
+        var myList = xs.Concat(ys);
+        return myList.Order().ToArray();
+    }
+
+
+    static void Main(string[] args)
+    {
+        int[] array1 = { 2, 4, 5 };
+        int[] array2 = { 1, 6, 7 };
+
+
+        int[] SlayList = merge(array1, array2);
+
+        foreach (var item in SlayList)
+        {
+            Console.Write(item);
+        }
+
+    }
+}
+
+
+## 5.7
+
+
+type typ =
+    
+     | TypL of typ                         (* list, element type is typ*) 
+
+
+
+
+let rec freeTypeVars t : typevar list = 
+    match normType t with
+    .. 
+    ..
+    | TypL t1 -> freeTypeVars t1
+
+
+
+let rec typeToString t : string =
+    match t with
+    ..
+    ..
+    | TypL _ -> "list"
+
+
+
+let rec showType t : string =
+let rec pr t = 
+    match normType t with
+    ..
+    ..
+    | TypL t1 -> (pr t1) + " list"
+pr t 
+
+
+
+
+let rec unify t1 t2 : unit =
+    let t1' = normType t1
+    let t2' = normType t2
+    let _ = debug ("Unify called with t1=" + (showType t1) + " and t2= " + (showType t2))
+    match (t1', t2') with
+    ..
+    ..
+    | (TypL a, TypL b) -> unify a b
+    ..
+    ..
+      if tv1 = tv2                then () 
+      else if tv1level < tv2level then linkVarToType tv1 t2'
+                                  else linkVarToType tv2 t1'
+    ..
+    ..
+    | (TypL _,   t) -> failwith ("type error: list and " + typeToString t)
+
+
+
+    let rec copyType subst t : typ = 
+    match t with
+    ..
+    ..
+    | TypL t1     -> TypL(copyType subst t1)
+    ..
+    ..
+
+
+    ## 6.1
+
+    Q. Is the result of the third one as expected?
+    A. addtwo already slays x in add 2, therefore x = 77 doesn't slay anything (ie. it slays nothing). It is just a local (unused) variable, independent of f. 
+
+
+    Q. Explain the result of the las one:
+    A. The statement returns a closure, since we only fed the function a single argument, when it expects two. The function returns itself with x already defined (fun y -> 2+y) This is also called currying. 
+
+
+    ## 6.2
+
+
+FunPar.fsl
+    
+let keyword s =
+    match s with
+    ..
+    ..
+    | "fun"   -> FUN
+    ..
+    ..
+
+
+rule Token = parse
+  ..
+  | "->"            { RARROW}
+  ..
+
+
+
+FunPar.fsy
+..
+%token FUN RARROW
+..
+
+
+AtExpr:
+ ..
+ ..
+  | FUN NAME RARROW Expr                { Fun($2, $4)            }
