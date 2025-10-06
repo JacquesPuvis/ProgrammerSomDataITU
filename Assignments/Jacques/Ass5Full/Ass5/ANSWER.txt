@@ -116,7 +116,7 @@ let rec unify t1 t2 : unit =
     A. The statement returns a closure, since we only fed the function a single argument, when it expects two. The function returns itself with x already defined (fun y -> 2+y) This is also called currying. 
 
 
-    ## 6.2
+## 6.2
 
 
 FunPar.fsl
@@ -170,4 +170,14 @@ let rec eval (e : expr) (env : value env) : value =
         let xVal = eval eArg env
         let callEnv = (x, xVal) :: declEnv
         in eval body callEnv
-      ..
+      ..'
+
+## 6.3
+This already works, based on our earlier changes
+
+
+## 6.4.1
+LOOK AT PDF 'typetree6.4.1.pdf'
+
+## 6.4.2
+LOOK AT PDF 'typetree6.4.2.pdf'
