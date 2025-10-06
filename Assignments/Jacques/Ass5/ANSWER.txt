@@ -2,6 +2,9 @@ HELLO MR LADEGAARD
 ENJOY THIS ASSIGNMENT
 
 
+PS. CAPS-LOCK != AGRESSION. WE MEAN NO DISRESPECT
+
+
 ## 5.1 A
 
 let merge (xs: int list) (ys: int list) =
