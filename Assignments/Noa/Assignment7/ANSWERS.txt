@@ -26,6 +26,32 @@ val it: Machine.instr list =
 
   compile "ex5";;
 val it: Machine.instr list =
-  [LDARGS; CALL (1, "L1"); STOP; 
-  Label "L1"; INCSP 1; GETBP; CSTI 1; ADD; GETBP; CSTI 0; ADD; LDI; STI; INCSP -1; INCSP 1; GETBP; CSTI 0; ADD; LDI; GETBP; CSTI 2; ADD; CALL (2, "L2"); INCSP -1; GETBP; CSTI 2; ADD; LDI; PRINTI; INCSP -1; INCSP -1; GETBP; CSTI 1; ADD; LDI; PRINTI; INCSP -1; INCSP -1; RET 0; 
-  Label "L2"; GETBP; CSTI 1; ADD; LDI; GETBP; CSTI 0; ADD; LDI; GETBP; CSTI 0; ADD; LDI; MUL; STI; INCSP -1; INCSP 0; RET 1]
+  [LDARGS;                                          //load command line with argument n
+  CALL (1, "L1");                                   //call main          
+  STOP;                                             //end program
+  Label "L1";                                       //void main(int n)
+    INCSP 1;                                        //inr r
+    GETBP; CSTI 1; ADD;                             //get adress for r
+    GETBP; CSTI 0; ADD; LDI;                        //get n
+    STI; INCSP -1;                                  //r = n 
+    INCSP 1;                                        //new int r
+    GETBP; CSTI 0; ADD; LDI;                        //get n
+    GETBP; CSTI 2; ADD;                             //get adress for new r
+    CALL (2, "L2");                                 //call square function (L2) with 2 arguments
+    INCSP -1;                                       //end block (end call to square)
+    GETBP; CSTI 2; ADD; LDI;                        //get r         
+    PRINTI; INCSP -1;                               //print r
+    INCSP -1;                                       //pop print argument (end block) and make new r a free variable
+    GETBP; CSTI 1; ADD; LDI;                        //get r
+    PRINTI; INCSP -1;                               //print r
+    INCSP -1;                                       //end block
+    RET 0;                                          //function end
+  Label "L2";                                       //void square(int i, int *rp)
+    GETBP; CSTI 1; ADD; LDI;                        //get *rp (pointer value to r) (argument index 1)
+    GETBP; CSTI 0; ADD; LDI;                        //get i (argument index 0)
+    GETBP; CSTI 0; ADD; LDI;                        //get i (argument index 0)
+    MUL;                                            //multiply i with i
+    STI;                                            //assign *rp the value of the multiplication
+    INCSP -1;                                       //pop leftover addresses, end block
+    INCSP 0;                                        //no operation
+    RET 1]                                          //return *rp
