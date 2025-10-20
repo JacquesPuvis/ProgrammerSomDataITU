@@ -55,3 +55,142 @@ val it: Machine.instr list =
     INCSP -1;                                       //pop leftover addresses, end block
     INCSP 0;                                        //no operation
     RET 1]                                          //return *rp
+
+
+Step-by-step explanation
+
+[ ] {0: LDARGS}
+Push the command-line argument onto the stack.
+Stack after: [4]
+Corresponds to: argument n = 4
+
+[ 4 ] {1: CALL 1 5}
+Call function at address 5 with one argument.
+A return address and a new base pointer (sentinel -999) are pushed.
+Stack: [4 -999 4]
+Corresponds to: entering main(n)
+
+[ 4 -999 4 ] {5: INCSP 1}
+Allocate one local variable (for i).
+Stack: [4 -999 4 0]
+Corresponds to: int i;
+
+[ 4 -999 4 0 ] {7–13: GETBP, CSTI 1, ADD, CSTI 0, STI}
+Compute address of i (BP + 1) and store 0 into it.
+Stack: [4 -999 4 0]
+Corresponds to: i = 0;
+
+[ 4 -999 4 0 ] {16: GOTO 43}
+Jump to the while condition.
+
+Loop test (i < n)
+
+[ 4 -999 4 0 ] {43–53: ... LT}
+Load i and n from the activation record.
+Compare i < n.
+Result 1 means true.
+Initially i=0, n=4 → condition true.
+
+[ 4 -999 4 0 1 ] {54: IFNZRO 18}
+Branch to label 18 (loop body) because condition ≠ 0.
+
+Loop body: print(i)
+
+[ 4 -999 4 0 ] {18–23}
+Load i (GETBP; CSTI 1; ADD; LDI)
+PRINTI → outputs current i value.
+Output: 0
+
+[ 4 -999 4 0 0 ] {24: INCSP -1}
+Remove the printed value from stack.
+
+Increment i
+
+[ 4 -999 4 0 ] {26–38}
+Compute address of i, load i, add 1, store result back.
+i becomes 1.
+Stack: [4 -999 4 1]
+
+Repeat the loop
+
+The control jumps back to address 43 to test (i < n) again.
+Each iteration follows the same pattern:
+
+Iteration 1:
+i=0, prints 0, increments i to 1
+Iteration 2:
+i=1, prints 1, increments i to 2
+Iteration 3:
+i=2, prints 2, increments i to 3
+Iteration 4:
+i=3, prints 3, increments i to 4
+When i=4, the test (i < n) fails, and execution exits the loop.
+
+End of loop and function
+
+[ 4 -999 4 4 0 ] {54: IFNZRO 18}
+Condition false → jump not taken.
+
+[ 4 -999 4 4 ] {56: INCSP -1}
+Clean up stack.
+
+[ 4 -999 4 ] {58: RET 0}
+Return from main.
+
+[ 4 ] {4: STOP}
+Program halts.
+
+Mapping between micro-C and bytecode
+micro-C statement bytecode instructions explanation
+
+int i; INCSP 1 allocate local space
+i = 0; GETBP + CSTI 1 + ADD + CSTI 0 + STI
+store 0 into local var
+while (i < n) GETBP/CSTI/ADD/LDI ... LT/IFNZRO
+load variables, compare, branch
+print(i); GETBP/CSTI/ADD/LDI + PRINTI load i and print
+i = i + 1; GETBP/CSTI/ADD + (load/store) increment variable
+return; RET 0 return from function
+
+Stack structure during execution
+
+(bottom) [ n | old BP | return addr | i | temporary values ... ] (top)
+
+n = function argument (value 4)
+old BP = sentinel -999
+return addr = where to return after function call
+i = local variable
+temporaries = expression results or addresses for STI/LDI
+
+
+EXERCISE 8.3 - Emotional status: empty stack, drought in the soul
+
+Absyn.fs:
+    and expr =
+    ...
+    | PreInc of access                 (* C/C++/Java/C# ++i or ++a[e] *)
+    | PreDec of access                 (* C/C++/Java/C# --i or --a[e] *)
+
+Comp.fs:
+    and cExpr (e : expr) (varEnv : varEnv) (funEnv : funEnv) : instr list = 
+    ...
+    | PreInc acc   -> cAccess acc varEnv funEnv @ [LDI; CSTI 1; ADD; STI]
+    | PreDec acc   -> cAccess acc varEnv funEnv @ [LDI; CSTI 1; SUB; STI]
+    ...
+
+Clex.fsl:
+    rule Token = parse
+    ...
+    | "++"            { PLUSONE } 
+    | "--"            { MINUSONE } 
+    ...
+
+CPar.fsy:
+    %token PLUS MINUS TIMES DIV MOD PLUSONE MINUSONE
+
+    ExprNotAccess:
+    ...
+    | PLUSONE Access                      { PreInc($2)          }
+    | MINUSONE Access                     { PreDec($2)          }
+    ...
+
