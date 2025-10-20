@@ -1,0 +1,349 @@
+
+4.1
+------------------------------------------------------------------------------------------------------------------------------------------
+Was a bunch of commands, so no answers.
+------------------------------------------------------------------------------------------------------------------------------------------
+4.2
+    1: run (fromString "let sum n = if n = 0 then 0 else n + sum(n-1) in sum 1000 end");;
+    2: run (fromString "let powEight n = if n = 0 then 1 else 3 * powEight(n-1) in powEight 8 end");;
+    3: run (fromString "let pow3 n = if n = 0 then 1 else 3 * pow3(n - 1) in let sumPower n = if n = 
+            0 then pow3(0) else pow3(n) + sumPower(n - 1) in sumPower 11 end end");; 
+    4: run (fromString "let sumPow n = if n = 0 then 0 else n  n  n  n  n  n  n * n + sumPow (n - 1) in sumPow 10 end");;
+
+------------------------------------------------------------------------------------------------------------------------------------------
+4.3
+
+ABSYN.fs
+type expr = 
+  | CstI of int
+  | CstB of bool
+  | Var of string
+  | Let of string * expr * expr
+  | Prim of string * expr * expr
+  | If of expr * expr * expr
+  | Letfun of string * string list * expr * expr    (* (f, x, fBody, letBody) *)
+  | Call of expr * expr list
+
+
+FUN.FS
+
+
+type value = 
+  | Int of int
+  | Closure of string * string list * expr * value env   
+
+
+
+
+let rec eval (e : expr) (env : value env) : int =
+    match e with 
+    | CstI i -> i
+    | CstB b -> if b then 1 else 0
+    | Var x  ->
+        match lookup env x with
+        | Int i -> i 
+        | _     -> failwith "eval Var"
+    | Prim(ope, e1, e2) -> 
+        let i1 = eval e1 env
+        let i2 = eval e2 env
+        match ope with
+        | "*" -> i1 * i2
+        | "+" -> i1 + i2
+        | "-" -> i1 - i2
+        | "=" -> if i1 = i2 then 1 else 0
+        | "<" -> if i1 < i2 then 1 else 0
+        | _   -> failwith ("unknown primitive " + ope)
+    | Let(x, eRhs, letBody) -> 
+        let xVal = Int(eval eRhs env)
+        let bodyEnv = (x, xVal) :: env
+        eval letBody bodyEnv
+    | If(e1, e2, e3) -> 
+        let b = eval e1 env
+        if b<>0 then eval e2 env
+        else eval e3 env
+    | Letfun(f, x, fBody, letBody) -> 
+        let bodyEnv = (f, Closure(f, x, fBody, env)) :: env 
+        eval letBody bodyEnv
+    | Call(Var f, eArg) -> 
+        let fClosure = lookup env f
+        match fClosure with
+        | Closure (f, x, fBody, fDeclEnv) ->
+
+        let xList = x // xList is the list of parameters
+        let evalList = List.map (fun e -> Int(eval e env)) eArg // evalList is the evaluation of the arguments
+        let paramBindings = List.zip xList evalList // ParamBindings uses List.Zip to match each parameter to an evaluatoin
+        let fBodyEnv = (f, fClosure) :: (paramBindings @ fDeclEnv) // Concatenate paramBindings to the env
+
+
+        eval fBody fBodyEnv
+        | _ -> failwith "eval Call: not a function"
+    | Call _ -> failwith "eval Call: not first-order function"
+
+------------------------------------------------------------------------------------------------------------------------------------------
+4.4
+
+FUNPAR.FSL
+
+%{
+ (* File Fun/FunPar.fsy 
+    Parser for micro-ML, a small functional language; one-argument functions.
+    sestoft@itu.dk * 2009-10-19
+  *)
+
+ open Absyn;
+%}
+
+%token <int> CSTINT
+%token <string> NAME
+%token <bool> CSTBOOL
+
+%token ELSE END FALSE IF IN LET NOT THEN TRUE
+%token PLUS MINUS TIMES DIV MOD
+%token EQ NE GT LT GE LE
+%token LPAR RPAR 
+%token ANDAND OROR
+%token EOF
+
+
+%left OROR          /* lowest precedence  */
+%left ANDAND
+%left ELSE              
+%left EQ NE 
+%left GT LT GE LE
+%left PLUS MINUS
+%left TIMES DIV MOD 
+%nonassoc NOT           /* highest precedence  */
+
+%start Main
+%type <Absyn.expr> Main Expr AtExpr Const
+%type <Absyn.expr> AppExpr
+%type <string list> ParList 
+%type <Absyn.expr list> ArgList 
+
+%%
+
+Main:
+    Expr EOF                            { $1 }
+;
+
+Expr:
+    AtExpr                              { $1                     }
+  | AppExpr                             { $1                     }
+  | IF Expr THEN Expr ELSE Expr         { If($2, $4, $6)         }
+  | MINUS Expr                          { Prim("-", CstI 0, $2)  }
+  | Expr PLUS  Expr                     { Prim("+",  $1, $3)     }
+  | Expr MINUS Expr                     { Prim("-",  $1, $3)     }
+  | Expr TIMES Expr                     { Prim("*",  $1, $3)     }
+  | Expr DIV   Expr                     { Prim("/",  $1, $3)     } 
+  | Expr MOD   Expr                     { Prim("%",  $1, $3)     }
+  | Expr EQ    Expr                     { Prim("=",  $1, $3)     }
+  | Expr NE    Expr                     { Prim("<>", $1, $3)     }
+  | Expr GT    Expr                     { Prim(">",  $1, $3)     }
+  | Expr LT    Expr                     { Prim("<",  $1, $3)     }
+  | Expr GE    Expr                     { Prim(">=", $1, $3)     }
+  | Expr LE    Expr                     { Prim("<=", $1, $3)     }
+  | Expr ANDAND   Expr                     { If($1, $3, CstB false) }
+  | Expr OROR    Expr                     { If($1, CstB true, $3)  }
+;
+
+      
+
+AtExpr:
+    Const                               { $1                     }
+  | NAME                                { Var $1                 }
+  | LET NAME EQ Expr IN Expr END        { Let($2, $4, $6)        }
+  | LET NAME ParList EQ Expr IN Expr END   { Letfun($2, $3, $5, $7) }
+  | LPAR Expr RPAR                      { $2                     }
+;
+
+ParList:
+    NAME                                { [$1]                   }
+  | NAME ParList                        { $1 :: $2               }
+;
+
+ArgList:
+    AtExpr                               { [$1]                   }
+  | ArgList AtExpr                       { $1 @ [$2]              }
+;
+
+AppExpr:
+    AtExpr ArgList { match $1 with Var f -> Call(Var f, $2) | _ -> failwith "AppExpr: function position must be a variable" }
+;
+
+Const:
+    CSTINT                              { CstI($1)               }
+  | CSTBOOL                             { CstB($1)               }
+;
+
+------------------------------------------------------------------------------------------------------------------------------------------
+4.5
+
+
+FUNLEX.fsl
+{
+ (* File Fun/Funlex.fsl 
+    Lexer for a simple functional language (micro-ML) 
+    sestoft@itu.dk * 2010-01-02
+  *)
+
+module FunLex
+
+open (*Microsoft.*)FSharp.Text.Lexing
+open Util
+open FunPar
+
+let lexemeAsString lexbuf = 
+    LexBuffer<char>.LexemeString lexbuf
+
+(* Start of outermost comment currently being scanned *)
+let commentStart = ref Position.Empty;  
+ 
+let commentDepth = ref 0;  (* Current comment nesting *)
+
+(* Distinguish keywords from identifiers: *)
+
+let keyword s =
+    match s with
+    | "else"  -> ELSE 
+    | "end"   -> END
+    | "false" -> CSTBOOL false
+    | "if"    -> IF
+    | "in"    -> IN
+    | "let"   -> LET
+    | "not"   -> NOT
+    | "then"  -> THEN
+    | "true"  -> CSTBOOL true
+    | _       -> NAME s
+}
+
+rule Token = parse
+  | [' ' '\t' '\r'] { Token lexbuf }
+  | '\n'            { lexbuf.EndPos <- lexbuf.EndPos.NextLine; Token lexbuf }
+  | ['0'-'9']+      { CSTINT (System.Int32.Parse (lexemeAsString lexbuf)) }
+  | ['a'-'z''A'-'Z']['a'-'z''A'-'Z''0'-'9']*
+                    { keyword (lexemeAsString lexbuf) }
+  | "(*"            { commentStart := lexbuf.StartPos;
+                      commentDepth := 1; 
+                      SkipComment lexbuf; Token lexbuf }
+  | '='             { EQ }
+  | "<>"            { NE }
+  | '>'             { GT }
+  | '<'             { LT }
+  | "&&"            { ANDAND }
+  | "||"            { OROR }
+  | ">="            { GE }
+  | "<="            { LE }
+  | '+'             { PLUS }                     
+  | '-'             { MINUS }                     
+  | '*'             { TIMES }                     
+  | '/'             { DIV }                     
+  | '%'             { MOD }
+  | '('             { LPAR }
+  | ')'             { RPAR }
+  | eof             { EOF }
+  | _               { failwith "Lexer error: illegal symbol" }
+
+and SkipComment = parse
+    "*)"            { commentDepth := !commentDepth - 1;  
+                      if !commentDepth = 0 then ()
+                      else SkipComment lexbuf 
+                    } 
+   | "(*"           { commentDepth := !commentDepth + 1; 
+                      SkipComment lexbuf }
+   | eof            { failwith "Lexer error: unterminated comment" }
+   | _              { SkipComment lexbuf }
+
+FUNPAR.FSY
+
+
+%{
+ (* File Fun/FunPar.fsy 
+    Parser for micro-ML, a small functional language; one-argument functions.
+    sestoft@itu.dk * 2009-10-19
+  *)
+
+ open Absyn;
+%}
+
+%token <int> CSTINT
+%token <string> NAME
+%token <bool> CSTBOOL
+
+%token ELSE END FALSE IF IN LET NOT THEN TRUE
+%token PLUS MINUS TIMES DIV MOD
+%token EQ NE GT LT GE LE
+%token LPAR RPAR 
+%token ANDAND OROR
+%token EOF
+
+
+%left OROR          /* lowest precedence  */
+%left ANDAND
+%left ELSE              
+%left EQ NE 
+%left GT LT GE LE
+%left PLUS MINUS
+%left TIMES DIV MOD 
+%nonassoc NOT           /* highest precedence  */
+
+%start Main
+%type <Absyn.expr> Main Expr AtExpr Const
+%type <Absyn.expr> AppExpr
+%type <string list> ParList 
+%type <Absyn.expr list> ArgList 
+
+%%
+
+Main:
+    Expr EOF                            { $1 }
+;
+
+Expr:
+    AtExpr                              { $1                     }
+  | AppExpr                             { $1                     }
+  | IF Expr THEN Expr ELSE Expr         { If($2, $4, $6)         }
+  | MINUS Expr                          { Prim("-", CstI 0, $2)  }
+  | Expr PLUS  Expr                     { Prim("+",  $1, $3)     }
+  | Expr MINUS Expr                     { Prim("-",  $1, $3)     }
+  | Expr TIMES Expr                     { Prim("*",  $1, $3)     }
+  | Expr DIV   Expr                     { Prim("/",  $1, $3)     } 
+  | Expr MOD   Expr                     { Prim("%",  $1, $3)     }
+  | Expr EQ    Expr                     { Prim("=",  $1, $3)     }
+  | Expr NE    Expr                     { Prim("<>", $1, $3)     }
+  | Expr GT    Expr                     { Prim(">",  $1, $3)     }
+  | Expr LT    Expr                     { Prim("<",  $1, $3)     }
+  | Expr GE    Expr                     { Prim(">=", $1, $3)     }
+  | Expr LE    Expr                     { Prim("<=", $1, $3)     }
+  | Expr ANDAND   Expr                     { If($1, $3, CstB false) }
+  | Expr OROR    Expr                     { If($1, CstB true, $3)  }
+;
+
+      
+
+AtExpr:
+    Const                               { $1                     }
+  | NAME                                { Var $1                 }
+  | LET NAME EQ Expr IN Expr END        { Let($2, $4, $6)        }
+  | LET NAME ParList EQ Expr IN Expr END   { Letfun($2, $3, $5, $7) }
+  | LPAR Expr RPAR                      { $2                     }
+;
+
+ParList:
+    NAME                                { [$1]                   }
+  | NAME ParList                        { $1 :: $2               }
+;
+
+ArgList:
+    AtExpr                               { [$1]                   }
+  | ArgList AtExpr                       { $1 @ [$2]              }
+;
+
+AppExpr:
+    AtExpr ArgList { match $1 with Var f -> Call(Var f, $2) | _ -> failwith "AppExpr: function position must be a variable" }
+;
+
+Const:
+    CSTINT                              { CstI($1)               }
+  | CSTBOOL                             { CstB($1)               }
+;
+------------------------------------------------------------------------------------------------------------------------------------------

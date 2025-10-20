@@ -24,7 +24,7 @@ let rec lookup env x =
 
 type value = 
   | Int of int
-  | Closure of string * string list * expr * value env       (* (f, x, fBody, fDeclEnv) *)
+  | Closure of string * string list * expr * value env       //4.3
 
 let rec eval (e : expr) (env : value env) : int =
     match e with 
@@ -55,15 +55,15 @@ let rec eval (e : expr) (env : value env) : int =
     | Letfun(f, x, fBody, letBody) -> 
       let bodyEnv = (f, Closure(f, x, fBody, env)) :: env 
       eval letBody bodyEnv
-    | Call(Var f, eArg) -> 
+    | Call(Var f, eArg) ->                                 //4.3
       let fClosure = lookup env f
       match fClosure with
       | Closure (f, x, fBody, fDeclEnv) ->
 
-        let xList = x
-        let evalList = List.map (fun e -> Int(eval e env)) eArg
-        let paramBindings = List.zip xList evalList
-        let fBodyEnv = (f, fClosure) :: (paramBindings @ fDeclEnv)
+        let xList = x // xList is the list of parameters
+        let evalList = List.map (fun e -> Int(eval e env)) eArg // evalList is the evaluation of the arguments
+        let paramBindings = List.zip xList evalList // ParamBindings uses List.Zip to match each parameter to an evaluatoin
+        let fBodyEnv = (f, fClosure) :: (paramBindings @ fDeclEnv) // Concatenate paramBindings to the env
 
 
         eval fBody fBodyEnv
@@ -76,28 +76,27 @@ let run e = eval e [];;
 
 (* Examples in abstract syntax *)
 
-let ex1 = Letfun("f1", "x", Prim("+", Var "x", CstI 1), 
-                 Call(Var "f1", CstI 12));;
+let ex1 = Letfun("f1", ["x"], Prim("+", Var "x", CstI 1), 
+                 Call(Var "f1", [CstI 12]));;
 
 (* Example: factorial *)
 
-let ex2 = Letfun("fac", "x",
+let ex2 = Letfun("fac", ["x"],
                  If(Prim("=", Var "x", CstI 0),
                     CstI 1,
                     Prim("*", Var "x", 
-                              Call(Var "fac", 
-                                   Prim("-", Var "x", CstI 1)))),
-                 Call(Var "fac", Var "n"));;
+                              Call(Var "fac", [Prim("-", Var "x", CstI 1)]))),
+                 Call(Var "fac", [Var "n"]));;
 
 (* let fac10 = eval ex2 [("n", Int 10)];; *)
 
 (* Example: deep recursion to check for constant-space tail recursion *)
 
-let ex3 = Letfun("deep", "x", 
+let ex3 = Letfun("deep", ["x"], 
                  If(Prim("=", Var "x", CstI 0),
                     CstI 1,
-                    Call(Var "deep", Prim("-", Var "x", CstI 1))),
-                 Call(Var "deep", Var "count"));;
+                    Call(Var "deep", [Prim("-", Var "x", CstI 1)])),
+                 Call(Var "deep", [Var "count"]));;
     
 let rundeep n = eval ex3 [("count", Int n)];;
 
@@ -105,17 +104,17 @@ let rundeep n = eval ex3 [("count", Int n)];;
 
 let ex4 =
     Let("y", CstI 11,
-        Letfun("f", "x", Prim("+", Var "x", Var "y"),
-               Let("y", CstI 22, Call(Var "f", CstI 3))));;
+        Letfun("f", ["x"], Prim("+", Var "x", Var "y"),
+               Let("y", CstI 22, Call(Var "f", [CstI 3]))));;
 
 (* Example: two function definitions: a comparison and Fibonacci *)
 
 let ex5 = 
-    Letfun("ge2", "x", Prim("<", CstI 1, Var "x"),
-           Letfun("fib", "n",
-                  If(Call(Var "ge2", Var "n"),
+    Letfun("ge2", ["x"], Prim("<", CstI 1, Var "x"),
+           Letfun("fib", ["n"],
+                  If(Call(Var "ge2", [Var "n"]),
                      Prim("+",
-                          Call(Var "fib", Prim("-", Var "n", CstI 1)),
-                          Call(Var "fib", Prim("-", Var "n", CstI 2))),
-                     CstI 1), Call(Var "fib", CstI 25)));;
-                     
+                          Call(Var "fib", [Prim("-", Var "n", CstI 1)]),
+                          Call(Var "fib", [Prim("-", Var "n", CstI 2)])),
+                     CstI 1), Call(Var "fib", [CstI 25])));;
+
