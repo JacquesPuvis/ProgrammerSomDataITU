@@ -1,0 +1,248 @@
+HELLO MR LADEGAARD
+ENJOY THIS ASSIGNMENT
+
+
+PS. CAPS-LOCK != AGRESSION. WE MEAN NO DISRESPECT
+
+
+## 5.1 A
+
+let merge (xs: int list) (ys: int list) =
+    [xs; ys] |> List.concat |> List.sort
+
+
+
+
+ ## 5.1 B
+
+class Slay
+{
+    static int[] merge(int[] xs, int[] ys)
+    {
+        var myList = xs.Concat(ys);
+        return myList.Order().ToArray();
+    }
+
+
+    static void Main(string[] args)
+    {
+        int[] array1 = { 2, 4, 5 };
+        int[] array2 = { 1, 6, 7 };
+
+
+        int[] SlayList = merge(array1, array2);
+
+        foreach (var item in SlayList)
+        {
+            Console.Write(item);
+        }
+
+    }
+}
+
+
+## 5.7
+
+
+type typ =
+    
+     | TypL of typ                         (* list, element type is typ*) 
+
+
+
+
+let rec freeTypeVars t : typevar list = 
+    match normType t with
+    .. 
+    ..
+    | TypL t1 -> freeTypeVars t1
+
+
+
+let rec typeToString t : string =
+    match t with
+    ..
+    ..
+    | TypL _ -> "list"
+
+
+
+let rec showType t : string =
+let rec pr t = 
+    match normType t with
+    ..
+    ..
+    | TypL t1 -> (pr t1) + " list"
+pr t 
+
+
+
+
+let rec unify t1 t2 : unit =
+    let t1' = normType t1
+    let t2' = normType t2
+    let _ = debug ("Unify called with t1=" + (showType t1) + " and t2= " + (showType t2))
+    match (t1', t2') with
+    ..
+    ..
+    | (TypL a, TypL b) -> unify a b
+    ..
+    ..
+      if tv1 = tv2                then () 
+      else if tv1level < tv2level then linkVarToType tv1 t2'
+                                  else linkVarToType tv2 t1'
+    ..
+    ..
+    | (TypL _,   t) -> failwith ("type error: list and " + typeToString t)
+
+
+
+    let rec copyType subst t : typ = 
+    match t with
+    ..
+    ..
+    | TypL t1     -> TypL(copyType subst t1)
+    ..
+    ..
+
+
+    ## 6.1
+
+    Q. Is the result of the third one as expected?
+    A. addtwo already slays x in add 2, therefore x = 77 doesn't slay anything (ie. it slays nothing). It is just a local (unused) variable, independent of f. 
+
+
+    Q. Explain the result of the las one:
+    A. The statement returns a closure, since we only fed the function a single argument, when it expects two. The function returns itself with x already defined (fun y -> 2+y) This is also called currying. 
+
+
+## 6.2
+
+
+FunPar.fsl
+    
+let keyword s =
+    match s with
+    ..
+    ..
+    | "fun"   -> FUN
+    ..
+    ..
+
+
+rule Token = parse
+  ..
+  | "->"            { RARROW}
+  ..
+
+
+
+FunPar.fsy
+..
+%token FUN RARROW
+..
+
+
+AtExpr:
+ ..
+ ..
+  | FUN NAME RARROW Expr                { Fun($2, $4)            }
+
+
+HigherFun.fsl
+
+type value = 
+..
+| Clos of string * expr * value env       (* (x, body, declEnv)*)
+
+
+
+
+let rec eval (e : expr) (env : value env) : value =
+    match e with
+    ..
+    | Fun (x, body) -> Clos(x,body, env) (* THIS LINE *)
+    | Call(eFun, eArg) -> 
+      let fClosure = eval eFun env  (* Different from Fun.fs - to enable first class functions *)
+      match fClosure with
+      ..
+      | Clos(x, body, declEnv) ->  (* THIS SEGMENT *)
+        let xVal = eval eArg env
+        let callEnv = (x, xVal) :: declEnv
+        in eval body callEnv
+      ..'
+
+## 6.3
+This already works, based on our earlier changes
+
+
+## 6.4.1
+LOOK AT PDF 'typetree6.4.1.pdf'
+
+It is polymorphic, because x can bee all kins of types. You can pass several types to that function
+
+## 6.4.2
+LOOK AT PDF 'typetree6.4.2.pdf'
+
+It is monomorphic, because x only can be an int. x has to be compared in x < 42, and if x wasn't an int, it wouldnt be able to perform the 'less than
+' operation
+
+
+## 6.5.1
+
+> inferType (fromString "let f x = 1 in f f end");;
+val it: string = "int"
+TYPE = INT
+
+
+> inferType (fromString "let f g = g g in f end");;
+System.Exception: type error: circularity
+
+A.This function tries to parse g as a parameter to itself, even though g doesn't exist as a function.
+The parameter g is not given in the parameter call
+
+> inferType (fromString "let f x = let g y = y in g false end in f 42 end");;
+val it: string = "bool"
+TYPE = BOOL
+
+> inferType(fromString"let f x = let g y = if true then y else x in g false end in f 42 end");;
+System.Exception: type error: bool and int
+A. The inner let forces x to be a boolean, but the outer functions x with 42 (an int)
+
+
+> inferType (fromString"let f x = let g y = if true then y else x in g false end in f true end");;
+val it: string = "bool"
+TYPE = BOOL
+
+
+## 6.5.2
+
+1.
+> inferType (fromString "let f x = if x then x else x in f end");;
+val it: string = "(bool -> bool)"
+
+2.
+> inferType (fromString "let f x = x + 1 in f end");;  
+val it: string = "(int -> int)"
+
+3.
+> inferType (fromString "let f x = let g y = x + y in g end in f end");;
+val it: string = "(int -> (int -> int))"
+
+4.
+> inferType (fromString "let f x = let g y = x in g end in f end");;
+val it: string = "('h -> ('g -> 'h))"
+
+5. 
+> inferType (fromString "let f x = let g y =  y in g end in f end");;   
+val it: string = "('g -> ('h -> 'h))"
+
+6.
+> inferType (fromString "let comp f = let g h = let k x = h (f x) in k end in g end in comp end");;
+val it: string = "(('l -> 'k) -> (('k -> 'm) -> ('l -> 'm)))"
+
+7. 'a -> 'b:
+This type cannot be implemented in a sound type system, as it would require a function that can produce any type 'b from any input type 'a without any relationship between them. This would break type safety.
+
+8. 'a:
+This type cannot be implemented as it would require a value that can be of any type simultaneously, which is impossible in a sound type system.
