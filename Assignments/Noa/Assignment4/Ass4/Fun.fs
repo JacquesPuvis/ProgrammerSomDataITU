@@ -18,7 +18,7 @@ type 'v env = (string * 'v) list
 let rec lookup env x =
     match env with 
     | []        -> failwith (x + " not found")
-    | (y, v)::r -> if x=y then v else lookup r x;;
+    | (y, v)::r -> if x=y then v else lookup r x;; 
 
 (* A runtime value is an integer or a function closure *)
 
@@ -99,7 +99,7 @@ let ex3 = Letfun("deep", "x",
                     Call(Var "deep", Prim("-", Var "x", CstI 1))),
                  Call(Var "deep", Var "count"));;
     
-let rundeep n = eval ex3 [("count", Int n)];;
+let rundeep n = eval ex3 [("count", Int n)];; 
 
 (* Example: static scope (result 14) or dynamic scope (result 25) *)
 

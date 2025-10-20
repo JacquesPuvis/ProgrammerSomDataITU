@@ -113,9 +113,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/noale/Documents/5semester/Programmer som data/ProgrammerSomDataITU/Assignments/Noa/Assignment2/Assignment2/HelloLex/hello3.fsproj",
-      "projectName": "hello3",
-      "projectPath": "/Users/noale/Documents/5semester/Programmer som data/ProgrammerSomDataITU/Assignments/Noa/Assignment2/Assignment2/HelloLex/hello3.fsproj",
+      "projectUniqueName": "/Users/noale/Documents/5semester/Programmer som data/ProgrammerSomDataITU/Assignments/Noa/Assignment2/Assignment2/HelloLex/hello2.fsproj",
+      "projectName": "hello2",
+      "projectPath": "/Users/noale/Documents/5semester/Programmer som data/ProgrammerSomDataITU/Assignments/Noa/Assignment2/Assignment2/HelloLex/hello2.fsproj",
       "packagesPath": "/Users/noale/.nuget/packages/",
       "outputPath": "/Users/noale/Documents/5semester/Programmer som data/ProgrammerSomDataITU/Assignments/Noa/Assignment2/Assignment2/HelloLex/obj/",
       "projectStyle": "PackageReference",
