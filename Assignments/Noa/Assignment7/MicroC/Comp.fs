@@ -129,7 +129,15 @@ let rec cStmt stmt (varEnv : varEnv) (funEnv : funEnv) : instr list =
       [GOTO labtest; Label labbegin] @ cStmt body varEnv funEnv
       @ [Label labtest] @ cExpr e varEnv funEnv @ [IFNZRO labbegin]
     | Expr e -> 
-      cExpr e varEnv funEnv @ [INCSP -1]  (* Remove result of expression from stack, as this is a statement *)
+      cExpr e varEnv funEnv @ [INCSP -1]
+    | Switch(e, cases) ->
+      let labend = newLabel()
+      let labcases = List.map (fun _ -> newLabel()) cases
+      let pre = cExpr e varEnv funEnv
+      let tests = List.concat (List.map2 (fun (c, _) lab -> [DUP; CSTI c; EQ; IFNZRO lab]) cases labcases)
+      let aftertests = [INCSP -1]
+      let bodies = List.concat (List.map2 (fun (c, body) lab -> [Label lab] @ [INCSP -1] @ cStmt body varEnv funEnv @ [GOTO labend]) cases labcases)
+      pre @ tests @ aftertests @ bodies @ [Label labend]
     | Block stmts -> 
       let rec loop stmts varEnv =
           match stmts with 
@@ -168,6 +176,13 @@ and cExpr (e : expr) (varEnv : varEnv) (funEnv : funEnv) : instr list =
     | Assign(acc, e) -> cAccess acc varEnv funEnv @ cExpr e varEnv funEnv @ [STI]
     | CstI i         -> [CSTI i]
     | Addr acc       -> cAccess acc varEnv funEnv
+    | Ternary(e1, e2, e3) ->
+      let labelse = newLabel()
+      let labend = newLabel()
+      cExpr e1 varEnv funEnv @ [IFZERO labelse] 
+      @ cExpr e2 varEnv funEnv @ [GOTO labend]
+      @ [Label labelse] @ cExpr e3 varEnv funEnv
+      @ [Label labend]
     | Prim1(ope, e1) ->
       cExpr e1 varEnv funEnv
       @ (match ope with

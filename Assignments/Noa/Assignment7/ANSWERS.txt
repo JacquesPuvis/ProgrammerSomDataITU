@@ -1,7 +1,16 @@
+Hello Mr. Ladegaard, 
+We present to you today's offerings brought to you by the fruit of our personal sacrifices. 
+
+We have slayed this assignment, but exercise 8.1 was incredibly long, so kindly inspect each 
+line closely (only kidding, we care for your sanity).
+
+All yours, 
+Dadler <3
+_________________________________________________________________________
 
 Exercise 8.1
 
-part 1
+PART 1:
 
 compileToFile (fromFile "ex3.c") "ex3.out";;  
 val it: Machine.instr list =
@@ -27,9 +36,9 @@ val it: Machine.instr list =
     RET 0]                                          //function end
 
 
-part 2
+PART 2:
 
-  compile "ex5";;
+compile "ex5";;
 val it: Machine.instr list =
   [LDARGS;                                          //load command line with argument n
   CALL (1, "L1");                                   //call main          
@@ -61,7 +70,7 @@ val it: Machine.instr list =
     INCSP 0;                                        //no operation
     RET 1]                                          //return *rp
 
-part 3
+PART 3: 
 
 [ ]{0: LDARGS}                       // push command-line arg n (=4)
 [ 4 ]{1: CALL 1 5}                   // call main(n); set frame; jump to L1 at pc=5
@@ -204,6 +213,8 @@ part 3
 [ 4 -999 4 ]{58: RET 0}              // return from main
 [ 4 ]{4: STOP}                       // halt VM
 
+_________________________________________________________________________
+
 EXERCISE 8.3 - Emotional status: empty stack, drought in the soul
 
 Absyn.fs:
@@ -235,5 +246,133 @@ CPar.fsy:
     | MINUSONE Access                     { PreDec($2)          }
     ...
 
+_________________________________________________________________________
+
 EXERCISE 8.4 - Emotional status: slightly unamused
 
+> compileToFile (fromFile "ex8.c") "ex8.out";;
+val it: Machine.instr list =
+  [LDARGS; CALL (0, "L1"); STOP; Label "L1"; INCSP 1; GETBP; CSTI 0; ADD;
+   CSTI 20000000; STI; INCSP -1; GOTO "L3"; Label "L2"; GETBP; CSTI 0; ADD;
+   GETBP; CSTI 0; ADD; LDI; CSTI 1; SUB; STI; INCSP -1; INCSP 0; Label "L3";
+   GETBP; CSTI 0; ADD; LDI; IFNZRO "L2"; INCSP -1; RET -1]
+
+ex8.out: 24 19 0 5 25 15 1 13 0 0 1 0 20000000 12 15 -1 16 35 13 0 0 1 13 0 0 1 11 0 1 2 12 15 -1 15 0 13 0 0 1 11 18 18 15 -1 21 -1
+prog1: 0 20000000 16 7 0 1 2 9 18 4 25
+
+In the bytecode of ex8, there is a lot of commands regarding the stack and cleanup of the entire program itself, 
+whereas in the bytecode of prog1 it doesn't work with the stack and is more intuitive to fairly intelligent humans. 
+Prog1 is more just a direct "translation" of the function in ex8.c. 
+
+
+> compileToFile (fromFile "ex13.c") "ex13.out";;
+val it: Machine.instr list =
+  [LDARGS; CALL (1, "L1"); STOP; 
+  Label "L1"; INCSP 1; GETBP; CSTI 1; ADD; CSTI 1889; STI; INCSP -1; GOTO "L3"; 
+  Label "L2"; GETBP; CSTI 1; ADD; GETBP; CSTI 1; ADD; LDI; CSTI 1; ADD; STI; INCSP -1; GETBP; CSTI 1; ADD; LDI;
+   CSTI 4; MOD; CSTI 0; EQ; IFZERO "L7"; GETBP; CSTI 1; ADD; LDI; CSTI 100; MOD; CSTI 0; EQ; NOT; IFNZRO "L9"; 
+   GETBP; CSTI 1; ADD; LDI; CSTI 400; MOD; CSTI 0; EQ; GOTO "L8"; 
+  Label "L9"; CSTI 1; 
+  Label "L8"; GOTO "L6";
+  Label "L7"; CSTI 0; 
+  Label "L6"; IFZERO "L4"; GETBP; CSTI 1; ADD; LDI; PRINTI; INCSP -1; GOTO "L5"; 
+  Label "L4"; INCSP 0; 
+  Label "L5"; INCSP 0;
+  Label "L3"; GETBP; CSTI 1; ADD; LDI; GETBP; CSTI 0; ADD; LDI; LT; IFNZRO "L2"; INCSP -1; RET 0]
+
+ex13.out:
+24 19 1 5 25 15 1 13 0 1 1 0 1889 12 15 -1 16 95 13 0 1 1 13 0 1 1 11 0 1 1 12 15 -1 13 0 1 1 11 0 4 5 0 0 6 17 77 13 0 1 1 11 0 100 5 0 0 6 8 18 73 13 0 1 1 11 0 400 5 0 0 6 16 75 0 1 16 79 0 0 17 91 13 0 1 1 11 22 15 -1 16 93 15 0 15 0 13 0 1 1 11 13 0 0 1 11 7 18 18 15 -1 21 0
+
+The bytecode uses labels both as conditionals and loops mimicking if statement and while loops. 
+For example L3 acts as a conditional in the while loop (y < n). 
+
+_________________________________________________________________________
+
+Exercise 8.5: 
+
+In Absyn.fs:
+and expr =                                                         
+  ...
+  | Ternary of expr * expr * expr    (* Conditional expression      *)
+
+In CLex.fsi: 
+rule Token = parse
+  ...
+  | '?'             { QUESTION }
+  | ':'             { COLON }                     
+  ...
+
+In CPar.fsy: 
+ExprNotAccess:
+  ...
+  | Expr QUESTION Expr COLON Expr       { Ternary($1, $3, $5) }
+  ...
+;
+
+In Comp.fs: 
+and cExpr (e : expr) (varEnv : varEnv) (funEnv : funEnv) : instr list = 
+    match e with
+    ...
+    | Ternary(e1, e2, e3) ->
+      let labelse = newLabel()
+      let labend = newLabel()
+      cExpr e1 varEnv funEnv @ [IFZERO labelse] 
+      @ cExpr e2 varEnv funEnv @ [GOTO labend]
+      @ [Label labelse] @ cExpr e3 varEnv funEnv
+      @ [Label labend]
+    ...
+
+Tested with test85.c: 
+void main() { 
+  int i; 
+  i=1; 
+  print (i ? 1 : 0);
+}
+
+_________________________________________________________________________
+
+Exercise 8.6: 
+
+In Absyn.fs:
+and stmt =                                                         
+  ...
+  | Switch of expr * (int * stmt) list(* Switch with integer cases    *)
+  ...
+
+In CLex.fsl:
+let keyword s =
+    match s with
+    ...
+    | "case"    -> CASE
+    | "switch"  -> SWITCH
+    ...
+
+In CPar.fsy: 
+StmtM: 
+  ...
+  | SWITCH LPAR Expr RPAR LBRACE Cases RBRACE    { Switch($3, $6)       }
+  ...
+;
+
+Cases:
+    /* empty */                                 { [] }
+  | Case Cases                                  { $1 :: $2 }
+;
+
+Case:
+    CASE CSTINT COLON Block                     { ($2, $4) }
+;
+
+In Comp.fs: 
+let rec cStmt stmt (varEnv : varEnv) (funEnv : funEnv) : instr list = 
+    match stmt with
+    ...
+    | Switch(e, cases) ->
+      let labend = newLabel()
+      let labcases = List.map (fun _ -> newLabel()) cases
+      let pre = cExpr e varEnv funEnv
+      let tests = List.concat (List.map2 (fun (c, _) lab -> [DUP; CSTI c; EQ; IFNZRO lab]) cases labcases)
+      let aftertests = [INCSP -1]
+      let bodies = List.concat (List.map2 (fun (c, body) lab -> [Label lab] @ [INCSP -1] @ cStmt body varEnv funEnv @ [GOTO labend]) cases labcases)
+      pre @ tests @ aftertests @ bodies @ [Label labend]
+    ...
