@@ -21,13 +21,13 @@ type token =
   | LT
   | GE
   | LE
+  | PLUSONE
+  | MINUSONE
   | PLUS
   | MINUS
   | TIMES
   | DIV
   | MOD
-  | PLUSONE
-  | MINUSONE
   | CHAR
   | ELSE
   | IF
@@ -63,13 +63,13 @@ type tokenId =
     | TOKEN_LT
     | TOKEN_GE
     | TOKEN_LE
+    | TOKEN_PLUSONE
+    | TOKEN_MINUSONE
     | TOKEN_PLUS
     | TOKEN_MINUS
     | TOKEN_TIMES
     | TOKEN_DIV
     | TOKEN_MOD
-    | TOKEN_PLUSONE
-    | TOKEN_MINUSONE
     | TOKEN_CHAR
     | TOKEN_ELSE
     | TOKEN_IF

@@ -1,6 +1,8 @@
 
 Exercise 8.1
 
+part 1
+
 compileToFile (fromFile "ex3.c") "ex3.out";;  
 val it: Machine.instr list =
   [LDARGS;                                          //load command line with argument n
@@ -23,6 +25,9 @@ val it: Machine.instr list =
     IFNZRO "L2";                                    //if true go to L2
     INCSP -1;                                       //if not true pop condition from stack (end loop)
     RET 0]                                          //function end
+
+
+part 2
 
   compile "ex5";;
 val it: Machine.instr list =
@@ -56,112 +61,148 @@ val it: Machine.instr list =
     INCSP 0;                                        //no operation
     RET 1]                                          //return *rp
 
+part 3
 
-Step-by-step explanation
+[ ]{0: LDARGS}                       // push command-line arg n (=4)
+[ 4 ]{1: CALL 1 5}                   // call main(n); set frame; jump to L1 at pc=5
+[ 4 -999 4 ]{5: INCSP 1}             // allocate local i (slot [BP+1])
+[ 4 -999 4 0 ]{7: GETBP}             // push BP
+[ 4 -999 4 0 2 ]{8: CSTI 1}          // push 1
+[ 4 -999 4 0 2 1 ]{10: ADD}          // compute &i = BP+1
+[ 4 -999 4 0 3 ]{11: CSTI 0}         // push 0
+[ 4 -999 4 0 3 0 ]{13: STI}          // i = 0
+[ 4 -999 4 0 0 ]{14: INCSP -1}       // pop temp
+[ 4 -999 4 0 ]{16: GOTO 43}          // jump to while test
 
-[ ] {0: LDARGS}
-Push the command-line argument onto the stack.
-Stack after: [4]
-Corresponds to: argument n = 4
+[ 4 -999 4 0 ]{43: GETBP}            // while test: push BP
+[ 4 -999 4 0 2 ]{44: CSTI 1}         // push 1
+[ 4 -999 4 0 2 1 ]{46: ADD}          // addr(i)
+[ 4 -999 4 0 3 ]{47: LDI}            // load i
+[ 4 -999 4 0 0 ]{48: GETBP}          // push BP
+[ 4 -999 4 0 0 2 ]{49: CSTI 0}       // push 0
+[ 4 -999 4 0 0 2 0 ]{51: ADD}        // addr(n)
+[ 4 -999 4 0 0 2 ]{52: LDI}          // load n
+[ 4 -999 4 0 0 4 ]{53: LT}           // i < n ?
+[ 4 -999 4 0 1 ]{54: IFNZRO 18}      // if true -> loop body (pc=18)
 
-[ 4 ] {1: CALL 1 5}
-Call function at address 5 with one argument.
-A return address and a new base pointer (sentinel -999) are pushed.
-Stack: [4 -999 4]
-Corresponds to: entering main(n)
+[ 4 -999 4 0 ]{18: GETBP}            // body: print i; i=i+1;
+[ 4 -999 4 0 2 ]{19: CSTI 1}         // push 1
+[ 4 -999 4 0 2 1 ]{21: ADD}          // addr(i)
+[ 4 -999 4 0 3 ]{22: LDI}            // load i
+[ 4 -999 4 0 0 ]{23: PRINTI}         // print i
+0 [ 4 -999 4 0 0 ]{24: INCSP -1}     // pop print arg
+[ 4 -999 4 0 ]{26: GETBP}            // compute i = i + 1
+[ 4 -999 4 0 2 ]{27: CSTI 1}         // push 1
+[ 4 -999 4 0 2 1 ]{29: ADD}          // addr(i)
+[ 4 -999 4 0 3 ]{30: GETBP}          // push BP
+[ 4 -999 4 0 3 2 ]{31: CSTI 1}       // push 1
+[ 4 -999 4 0 3 2 1 ]{33: ADD}        // addr(i)
+[ 4 -999 4 0 3 3 ]{34: LDI}          // load i
+[ 4 -999 4 0 3 0 ]{35: CSTI 1}       // push 1
+[ 4 -999 4 0 3 0 1 ]{37: ADD}        // i+1
+[ 4 -999 4 0 3 1 ]{38: STI}          // store back to i
+[ 4 -999 4 1 1 ]{39: INCSP -1}       // pop temp
+[ 4 -999 4 1 ]{41: INCSP 0}          // no-op
+[ 4 -999 4 1 ]{43: GETBP}            // test again
+[ 4 -999 4 1 2 ]{44: CSTI 1}         // push 1
+[ 4 -999 4 1 2 1 ]{46: ADD}          // addr(i)
+[ 4 -999 4 1 3 ]{47: LDI}            // load i
+[ 4 -999 4 1 1 ]{48: GETBP}          // push BP
+[ 4 -999 4 1 1 2 ]{49: CSTI 0}       // push 0
+[ 4 -999 4 1 1 2 0 ]{51: ADD}        // addr(n)
+[ 4 -999 4 1 1 2 ]{52: LDI}          // load n
+[ 4 -999 4 1 1 4 ]{53: LT}           // i < n ?
+[ 4 -999 4 1 1 ]{54: IFNZRO 18}      // if true -> body
 
-[ 4 -999 4 ] {5: INCSP 1}
-Allocate one local variable (for i).
-Stack: [4 -999 4 0]
-Corresponds to: int i;
+[ 4 -999 4 1 ]{18: GETBP}            // body: print i
+[ 4 -999 4 1 2 ]{19: CSTI 1}
+[ 4 -999 4 1 2 1 ]{21: ADD}
+[ 4 -999 4 1 3 ]{22: LDI}
+[ 4 -999 4 1 1 ]{23: PRINTI}
+1 [ 4 -999 4 1 1 ]{24: INCSP -1}     // pop print arg
+[ 4 -999 4 1 ]{26: GETBP}            // i = i + 1
+[ 4 -999 4 1 2 ]{27: CSTI 1}
+[ 4 -999 4 1 2 1 ]{29: ADD}
+[ 4 -999 4 1 3 ]{30: GETBP}
+[ 4 -999 4 1 3 2 ]{31: CSTI 1}
+[ 4 -999 4 1 3 2 1 ]{33: ADD}
+[ 4 -999 4 1 3 3 ]{34: LDI}
+[ 4 -999 4 1 3 1 ]{35: CSTI 1}
+[ 4 -999 4 1 3 1 1 ]{37: ADD}
+[ 4 -999 4 1 3 2 ]{38: STI}
+[ 4 -999 4 2 2 ]{39: INCSP -1}
+[ 4 -999 4 2 ]{41: INCSP 0}
+[ 4 -999 4 2 ]{43: GETBP}            // test again
+[ 4 -999 4 2 2 ]{44: CSTI 1}
+[ 4 -999 4 2 2 1 ]{46: ADD}
+[ 4 -999 4 2 3 ]{47: LDI}
+[ 4 -999 4 2 2 ]{48: GETBP}
+[ 4 -999 4 2 2 2 ]{49: CSTI 0}
+[ 4 -999 4 2 2 2 0 ]{51: ADD}
+[ 4 -999 4 2 2 2 ]{52: LDI}
+[ 4 -999 4 2 2 4 ]{53: LT}
+[ 4 -999 4 2 1 ]{54: IFNZRO 18}      // still true -> body
 
-[ 4 -999 4 0 ] {7–13: GETBP, CSTI 1, ADD, CSTI 0, STI}
-Compute address of i (BP + 1) and store 0 into it.
-Stack: [4 -999 4 0]
-Corresponds to: i = 0;
+[ 4 -999 4 2 ]{18: GETBP}            // body: print i
+[ 4 -999 4 2 2 ]{19: CSTI 1}
+[ 4 -999 4 2 2 1 ]{21: ADD}
+[ 4 -999 4 2 3 ]{22: LDI}
+[ 4 -999 4 2 2 ]{23: PRINTI}
+2 [ 4 -999 4 2 2 ]{24: INCSP -1}     // pop print arg
+[ 4 -999 4 2 ]{26: GETBP}            // i = i + 1
+[ 4 -999 4 2 2 ]{27: CSTI 1}
+[ 4 -999 4 2 2 1 ]{29: ADD}
+[ 4 -999 4 2 3 ]{30: GETBP}
+[ 4 -999 4 2 3 2 ]{31: CSTI 1}
+[ 4 -999 4 2 3 2 1 ]{33: ADD}
+[ 4 -999 4 2 3 3 ]{34: LDI}
+[ 4 -999 4 2 3 2 ]{35: CSTI 1}
+[ 4 -999 4 2 3 2 1 ]{37: ADD}
+[ 4 -999 4 2 3 3 ]{38: STI}
+[ 4 -999 4 3 3 ]{39: INCSP -1}
+[ 4 -999 4 3 ]{41: INCSP 0}
+[ 4 -999 4 3 ]{43: GETBP}            // test again
+[ 4 -999 4 3 2 ]{44: CSTI 1}
+[ 4 -999 4 3 2 1 ]{46: ADD}
+[ 4 -999 4 3 3 ]{47: LDI}
+[ 4 -999 4 3 3 ]{48: GETBP}
+[ 4 -999 4 3 3 2 ]{49: CSTI 0}
+[ 4 -999 4 3 3 2 0 ]{51: ADD}
+[ 4 -999 4 3 3 2 ]{52: LDI}
+[ 4 -999 4 3 3 4 ]{53: LT}           // check 3 < 4
+[ 4 -999 4 3 1 ]{54: IFNZRO 18}      // true -> body
 
-[ 4 -999 4 0 ] {16: GOTO 43}
-Jump to the while condition.
-
-Loop test (i < n)
-
-[ 4 -999 4 0 ] {43–53: ... LT}
-Load i and n from the activation record.
-Compare i < n.
-Result 1 means true.
-Initially i=0, n=4 → condition true.
-
-[ 4 -999 4 0 1 ] {54: IFNZRO 18}
-Branch to label 18 (loop body) because condition ≠ 0.
-
-Loop body: print(i)
-
-[ 4 -999 4 0 ] {18–23}
-Load i (GETBP; CSTI 1; ADD; LDI)
-PRINTI → outputs current i value.
-Output: 0
-
-[ 4 -999 4 0 0 ] {24: INCSP -1}
-Remove the printed value from stack.
-
-Increment i
-
-[ 4 -999 4 0 ] {26–38}
-Compute address of i, load i, add 1, store result back.
-i becomes 1.
-Stack: [4 -999 4 1]
-
-Repeat the loop
-
-The control jumps back to address 43 to test (i < n) again.
-Each iteration follows the same pattern:
-
-Iteration 1:
-i=0, prints 0, increments i to 1
-Iteration 2:
-i=1, prints 1, increments i to 2
-Iteration 3:
-i=2, prints 2, increments i to 3
-Iteration 4:
-i=3, prints 3, increments i to 4
-When i=4, the test (i < n) fails, and execution exits the loop.
-
-End of loop and function
-
-[ 4 -999 4 4 0 ] {54: IFNZRO 18}
-Condition false → jump not taken.
-
-[ 4 -999 4 4 ] {56: INCSP -1}
-Clean up stack.
-
-[ 4 -999 4 ] {58: RET 0}
-Return from main.
-
-[ 4 ] {4: STOP}
-Program halts.
-
-Mapping between micro-C and bytecode
-micro-C statement bytecode instructions explanation
-
-int i; INCSP 1 allocate local space
-i = 0; GETBP + CSTI 1 + ADD + CSTI 0 + STI
-store 0 into local var
-while (i < n) GETBP/CSTI/ADD/LDI ... LT/IFNZRO
-load variables, compare, branch
-print(i); GETBP/CSTI/ADD/LDI + PRINTI load i and print
-i = i + 1; GETBP/CSTI/ADD + (load/store) increment variable
-return; RET 0 return from function
-
-Stack structure during execution
-
-(bottom) [ n | old BP | return addr | i | temporary values ... ] (top)
-
-n = function argument (value 4)
-old BP = sentinel -999
-return addr = where to return after function call
-i = local variable
-temporaries = expression results or addresses for STI/LDI
-
+[ 4 -999 4 3 ]{18: GETBP}            // body: print i
+[ 4 -999 4 3 2 ]{19: CSTI 1}
+[ 4 -999 4 3 2 1 ]{21: ADD}
+[ 4 -999 4 3 3 ]{22: LDI}
+[ 4 -999 4 3 3 ]{23: PRINTI}
+3 [ 4 -999 4 3 3 ]{24: INCSP -1}     // pop print arg
+[ 4 -999 4 3 ]{26: GETBP}            // i = i + 1
+[ 4 -999 4 3 2 ]{27: CSTI 1}
+[ 4 -999 4 3 2 1 ]{29: ADD}
+[ 4 -999 4 3 3 ]{30: GETBP}
+[ 4 -999 4 3 3 2 ]{31: CSTI 1}
+[ 4 -999 4 3 3 2 1 ]{33: ADD}
+[ 4 -999 4 3 3 3 ]{34: LDI}
+[ 4 -999 4 3 3 3 ]{35: CSTI 1}
+[ 4 -999 4 3 3 3 1 ]{37: ADD}
+[ 4 -999 4 3 3 4 ]{38: STI}          // i becomes 4
+[ 4 -999 4 4 4 ]{39: INCSP -1}
+[ 4 -999 4 4 ]{41: INCSP 0}
+[ 4 -999 4 4 ]{43: GETBP}            // test again
+[ 4 -999 4 4 2 ]{44: CSTI 1}
+[ 4 -999 4 4 2 1 ]{46: ADD}
+[ 4 -999 4 4 3 ]{47: LDI}            // load i=4
+[ 4 -999 4 4 4 ]{48: GETBP}          // load n
+[ 4 -999 4 4 4 2 ]{49: CSTI 0}
+[ 4 -999 4 4 4 2 0 ]{51: ADD}
+[ 4 -999 4 4 4 2 ]{52: LDI}          // n=4
+[ 4 -999 4 4 4 4 ]{53: LT}           // 4<4 ? -> 0
+[ 4 -999 4 4 0 ]{54: IFNZRO 18}      // false -> exit loop
+[ 4 -999 4 4 ]{56: INCSP -1}         // pop test result
+[ 4 -999 4 ]{58: RET 0}              // return from main
+[ 4 ]{4: STOP}                       // halt VM
 
 EXERCISE 8.3 - Emotional status: empty stack, drought in the soul
 
@@ -174,8 +215,8 @@ Absyn.fs:
 Comp.fs:
     and cExpr (e : expr) (varEnv : varEnv) (funEnv : funEnv) : instr list = 
     ...
-    | PreInc acc   -> cAccess acc varEnv funEnv @ [LDI; CSTI 1; ADD; STI]
-    | PreDec acc   -> cAccess acc varEnv funEnv @ [LDI; CSTI 1; SUB; STI]
+    | PreInc acc -> cAccess acc varEnv funEnv @ [DUP; LDI; CSTI 1; ADD; STI; LDI]
+    | PreDec acc -> cAccess acc varEnv funEnv @ [DUP; LDI; CSTI 1; SUB; STI; LDI]
     ...
 
 Clex.fsl:
@@ -193,4 +234,6 @@ CPar.fsy:
     | PLUSONE Access                      { PreInc($2)          }
     | MINUSONE Access                     { PreDec($2)          }
     ...
+
+EXERCISE 8.4 - Emotional status: slightly unamused
 

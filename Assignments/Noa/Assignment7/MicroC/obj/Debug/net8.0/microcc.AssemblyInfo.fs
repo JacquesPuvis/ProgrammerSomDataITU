@@ -7,11 +7,11 @@ open System
 open System.Reflection
 
 
-[<assembly: System.Reflection.AssemblyCompanyAttribute("hello3")>]
+[<assembly: System.Reflection.AssemblyCompanyAttribute("microcc")>]
 [<assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")>]
 [<assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")>]
 [<assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a767a904cd44e0bdcd2d0c203c916590c497dd2c")>]
-[<assembly: System.Reflection.AssemblyProductAttribute("hello3")>]
-[<assembly: System.Reflection.AssemblyTitleAttribute("hello3")>]
+[<assembly: System.Reflection.AssemblyProductAttribute("microcc")>]
+[<assembly: System.Reflection.AssemblyTitleAttribute("microcc")>]
 [<assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")>]
 do()

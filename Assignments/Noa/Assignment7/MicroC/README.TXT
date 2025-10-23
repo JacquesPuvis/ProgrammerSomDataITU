@@ -25,17 +25,17 @@ B. To compile and use the micro-C compiler
    dotnet fsi -r ~/fsharp/FsLexYacc.Runtime.dll Util.fs Absyn.fs CPar.fs CLex.fs Parse.fs Machine.fs Comp.fs ParseAndComp.fs   
 
    open ParseAndComp;;
-   compileToFile (fromFile "ex11.c") "ex11.out";;
-   compile "ex11";;
+   compileToFile (fromFile "ex8.c") "ex8.out";;
+   compile "ex8";;
 
 The Java stack machine:
 
    javac Machine.java
-   java Machine ex11.out 8
+   java Machine ex8.out 8
 
 The C stack machine
    gcc -o machine machine.c
-   ./machine ex11.out 8    
+   ./machine ex8.out 8    
 
 C. To compile and use the backwards (continuation-based) micro-C compiler:
 
@@ -44,12 +44,12 @@ C. To compile and use the backwards (continuation-based) micro-C compiler:
    dotnet fsi -r ~/fsharp/FsLexYacc.Runtime.dll Util.fs Absyn.fs CPar.fs CLex.fs Parse.fs Machine.fs Contcomp.fs ParseAndContcomp.fs   
 
    open ParseAndContcomp;;
-   contCompileToFile (fromFile "ex11.c") "ex11.out";;
-   compile "ex11";;
+   contCompileToFile (fromFile "ex8.c") "ex8.out";;
+   compile "ex8";;
    #q;;
 
    javac Machine.java
-   java Machine ex11.out 8	
+   java Machine ex8.out 8	
 
 
 D. Build the backwards micro-C compiler as a command-line program microcc
