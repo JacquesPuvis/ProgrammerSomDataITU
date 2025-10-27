@@ -18,6 +18,8 @@ let keyword s =
     match s with
     | "char"    -> CHAR 
     | "else"    -> ELSE
+    | "case"    -> CASE
+    | "switch"  -> SWITCH
     | "false"   -> CSTBOOL 0
     | "if"      -> IF
     | "int"     -> INT
@@ -67,7 +69,9 @@ rule Token = parse
   | "||"            { SEQOR }                     
   | "&&"            { SEQAND }                     
   | "&"             { AMP }                     
-  | "!"             { NOT }                     
+  | "!"             { NOT }
+  | '?'             { QUESTION }
+  | ':'             { COLON }                     
   | '('             { LPAR }
   | ')'             { RPAR }
   | '{'             { LBRACE }

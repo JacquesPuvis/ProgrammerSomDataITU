@@ -25,6 +25,7 @@ and expr =
   | Call of string * expr list       (* Function call f(...)        *)
   | PreInc of access                 (* C/C++/Java/C# ++i or ++a[e] *)
   | PreDec of access                 (* C/C++/Java/C# --i or --a[e] *)
+  | Ternary of expr * expr * expr    (* Conditional expression      *)
                                                                    
 and access =                                                       
   | AccVar of string                 (* Variable access        x    *) 
@@ -32,11 +33,12 @@ and access =
   | AccIndex of access * expr        (* Array indexing         a[e] *)
                                                                    
 and stmt =                                                         
-  | If of expr * stmt * stmt         (* Conditional                 *)
-  | While of expr * stmt             (* While loop                  *)
-  | Expr of expr                     (* Expression statement   e;   *)
-  | Return of expr option            (* Return from method          *)
-  | Block of stmtordec list          (* Block: grouping and scope   *)
+  | If of expr * stmt * stmt            (* Conditional                 *)
+  | While of expr * stmt                (* While loop                  *)
+  | Switch of expr * (int * stmt) list  (* Switch with integer cases    *)
+  | Expr of expr                        (* Expression statement   e;   *)
+  | Return of expr option               (* Return from method          *)
+  | Block of stmtordec list             (* Block: grouping and scope   *)
                                                                    
 and stmtordec =                                                    
   | Dec of typ * string              (* Local variable declaration  *)
