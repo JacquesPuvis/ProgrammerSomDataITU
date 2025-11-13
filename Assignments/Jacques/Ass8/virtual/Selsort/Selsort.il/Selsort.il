@@ -1,0 +1,97 @@
+
+	.method public hidebysig static 
+		void SelectionSort (
+			int32[] arr
+		) cil managed 
+	{
+		// Method begins at RVA 0x20cc
+		// Header size: 12
+		// Code size: 78 (0x4e)
+		.maxstack 4
+		.locals init (
+			[0] int32,
+			[1] int32,
+			[2] int32,
+			[3] int32,
+			[4] bool,
+			[5] bool,
+			[6] bool
+		)
+
+		IL_0000: nop
+		IL_0001: ldc.i4.0
+		IL_0002: stloc.0
+		IL_0003: br.s IL_0041
+		// loop start (head: IL_0041)
+			IL_0005: nop					// No operation
+			IL_0006: ldloc.0				// Push variable 0 (i) onto the stack
+			IL_0007: stloc.1				// Pop stack and store in variable 1 (least)
+			IL_0008: ldloc.0				// Push variable 0 (i) onto the stack
+			IL_0009: ldc.i4.1				// Push constant 1 onto stack as int32
+			IL_000a: add					// pop the top two values, add them, push result back
+			IL_000b: stloc.3				// Pop the top value and store it in variable 3 (j = i + 1)
+			IL_000c: br.s IL_0022			// Branch to the instruction label at IL_0022
+			// loop start (head: IL_0022)
+				IL_000e: ldarg.0			// Push argument 0 (arr) onto the stack
+				IL_000f: ldloc.3			// push variable 3 (j = i + 1) onto the stack
+				IL_0010: ldelem.i4			// Push array element of type int32 (arr[j])
+				IL_0011: ldarg.0			// Push argument 0 (arr) onto the stack
+				IL_0012: ldloc.1			// Push variable 1 (least)
+				IL_0013: ldelem.i4			// Push array element of type int32 (arr[least])
+				IL_0014: clt				// Compare less than - if arr[j] < arr[least] (push 1 if true, 0 if false )
+				IL_0016: stloc.s 4			// Pop top of stack (truth value) and save as variable 4
+				IL_0018: ldloc.s 4			// Push variable 4 (truth value) to stack
+				IL_001a: brfalse.s IL_001e  // Branch to IL_001e if truth value = 0
+
+				IL_001c: ldloc.3			// Push variable 3 (j) 
+				IL_001d: stloc.1			// pop and store in variable 1 (least = j)
+
+				IL_001e: ldloc.3			// Push variable 3 (j)
+				IL_001f: ldc.i4.1			// Push constant 1
+				IL_0020: add				// j + 1
+				IL_0021: stloc.3			// Pop stack and store as variable 3 (j = j + 1 or j++)
+
+				IL_0022: ldloc.3			// Push variable 3 (j)
+				IL_0023: ldarg.0			// Push arg 0 (arr)
+				IL_0024: ldlen				// Push arr.length
+				IL_0025: conv.i4			// Convert to int32
+				IL_0026: clt				// Compare less than (j < arr.length) (push 1 if true, 0 if false)
+				IL_0028: stloc.s 5			// Pop and store truth value in variable 5
+				IL_002a: ldloc.s 5			// Push variable 5 (truth value)
+				IL_002c: brtrue.s IL_000e	// Branch to IL_000e if truth value = 0
+			// end loop
+
+			IL_002e: ldarg.0				// Push argument 0 (arr)
+			IL_002f: ldloc.0				// Push variable 0 (i)
+			IL_0030: ldelem.i4				// Push array element of type int32 (arr[i])
+			IL_0031: stloc.2				// pop and store in variable 2 (tmp = arr[i])
+			IL_0032: ldarg.0				// Push argument 0 (arr)
+			IL_0033: ldloc.0				// Push variable 0 (i)
+			IL_0034: ldarg.0				// Push argument 0 (arr)
+			IL_0035: ldloc.1				// Push variable 1 (least)
+			IL_0036: ldelem.i4				// Push array element of type int32 (arr[least])
+			IL_0037: stelem.i4				// Pop and store an element of arr, type int32 (arr[i] = arr[least])
+			IL_0038: ldarg.0				// Push argument 0 (arr)
+			IL_0039: ldloc.1				// Push variable 1 (least)
+			IL_003a: ldloc.2				// Push variable 2 (tmp)
+			IL_003b: stelem.i4				// Pop and store an element of arr, type int32 (arr[least] = tmp)
+			IL_003c: nop					// no operation
+			IL_003d: ldloc.0				// Push variable 0 (i)
+			IL_003e: ldc.i4.1				// Push constant 1
+			IL_003f: add					// add i + 1
+			IL_0040: stloc.0				// Pop and store in variable 0 (i = i + 1)
+
+			IL_0041: ldloc.0				// Push variable 0 (i)
+			IL_0042: ldarg.0				// Push argument 0 (arr)
+			IL_0043: ldlen					// Push arr.length
+			IL_0044: conv.i4				// convert arr.length to int32
+			IL_0045: clt					// Compare less than (i < arr.length)
+			IL_0047: stloc.s 6				// Pop and store truth value in variable 6
+			IL_0049: ldloc.s 6				// Push variable 6 (truth value)
+			IL_004b: brtrue.s IL_0005		// Branch to IL_0005 if truth value = 1	
+		// end loop
+
+		IL_004d: ret
+	} // end of method Selsort::SelectionSort
+
+	

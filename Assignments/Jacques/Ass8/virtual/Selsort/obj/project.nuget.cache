@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "5Zzxa/xqs7U=",
+  "success": true,
+  "projectFilePath": "/home/jacquespuvis/itu/5sem/psd/Assignments/Jacques/Ass8/virtual/Selsort/Selsort.csproj",
+  "expectedPackageFiles": [
+    "/home/jacquespuvis/.nuget/packages/microsoft.netcore.app.ref/8.0.15/microsoft.netcore.app.ref.8.0.15.nupkg.sha512",
+    "/home/jacquespuvis/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.15/microsoft.aspnetcore.app.ref.8.0.15.nupkg.sha512",
+    "/home/jacquespuvis/.nuget/packages/microsoft.netcore.app.host.linux-x64/8.0.15/microsoft.netcore.app.host.linux-x64.8.0.15.nupkg.sha512"
+  ],
+  "logs": []
+}

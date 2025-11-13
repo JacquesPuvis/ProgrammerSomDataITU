@@ -1,0 +1,72 @@
+
+  public static void SelectionSort(int[]);
+    descriptor: ([I)V
+    flags: (0x0009) ACC_PUBLIC, ACC_STATIC
+    Code:
+      stack=4, locals=4, args_size=1
+         0: iconst_0              // Push constant 0
+         1: istore_1              // Pop and store in variable 1 (i = 0)
+         2: iload_1               // Push variable 1 (i)
+         3: aload_0               // Push argument 0 (arr)
+         4: arraylength           // Push arr.length
+         5: if_icmpge     57      // Compare i < arr.length and jump to 57 if false
+         8: iload_1               // Push variable 1 (i)
+         9: istore_2              // Pop and store in variable 2 (least = i)
+        10: iload_1               // Push variable 1 (i)
+        11: iconst_1              // Push constant 1
+        12: iadd                  // Add i + 1
+        13: istore_3              // Pop and store in variable 3 (j = i + 1)
+        14: iload_3               // Push variable 3 (j)
+        15: aload_0               // Push argument 0 (arr)
+        16: arraylength           // Push arr.length
+        17: if_icmpge     37      // Compare j < arr.length and jump to 37 if false 
+        20: aload_0               // Push argument 0 (arr)
+        21: iload_3               // Push variable 3 (j)
+        22: iaload                // Push array element (arr[j])
+        23: aload_0               // Push argument 0 (arr)
+        24: iload_2               // Push variable 2 (least)
+        25: iaload                // Push array element (arr[least])
+        26: if_icmpge     31      // Compare arr[j] < arr[least] and jump to 31 if false
+        29: iload_3               // Push variable 3 (j)
+        30: istore_2              // Pop and store in variable 2 (least = j)
+        31: iinc          3, 1    // increment variable 3 by 1 (j++)
+        34: goto          14      // goto 14 (go back to start of loop)
+        37: aload_0               // Push argument 0 (arr)               
+        38: iload_1               // Push variable (i)
+        39: iaload                // Push array element (arr[i])
+        40: istore_3              // Pop and store in variable 3 (tmp)
+        41: aload_0               // Push argument 0 (arr)
+        42: iload_1               // Push variable 1 (i)
+        43: aload_0               // Push argument 0 (arr)
+        44: iload_2               // Push variable 2 (least)
+        45: iaload                // Push array element (arr[least])
+        46: iastore               // arr[i] = arr[least]
+        47: aload_0               // Push argument 0 (arr)
+        48: iload_2               // Push variable 2 (least)
+        49: iload_3               // Push variable 3 (tmp)
+        50: iastore               // arr[least] = tmp
+        51: iinc          1, 1    // Increment variable 1 by 1 (i++)
+        54: goto          2       // goto 2
+        57: return                // RETURN
+      LineNumberTable:
+        line 21: 0
+        line 22: 8
+        line 23: 10
+        line 24: 20
+        line 25: 29
+        line 23: 31
+        line 26: 37
+        line 21: 51
+        line 28: 57
+      StackMapTable: number_of_entries = 5
+        frame_type = 252 /* append */
+          offset_delta = 2
+          locals = [ int ]
+        frame_type = 253 /* append */
+          offset_delta = 11
+          locals = [ int, int ]
+        frame_type = 16 /* same */
+        frame_type = 250 /* chop */
+          offset_delta = 5
+        frame_type = 249 /* chop */
+          offset_delta = 19
