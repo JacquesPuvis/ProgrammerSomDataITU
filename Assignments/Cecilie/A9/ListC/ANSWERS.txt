@@ -1,0 +1,95 @@
+EXERCISE 10.1: 
+
+(i)
+ADD:
+The instruction adds two integers.
+The machine expects two integers on the top of the stack. It reads the two top stack 
+words Untag(s[sp - 1]) and Untag(s[sp]), computes their sum and then uses Tag to 
+store the result back into the the location of the former second-from-top element. 
+Lastly, it decrements the stack pointer (one value has been popped)
+
+CSTI i: 
+The instruction pushes an integer constant i onto the stack.
+The machine expects one integer i from the program array p, and then uses Tag to 
+produce a tagged integer value to then store the integer in the stack on sp + 1. 
+Lastly it increases the stack pointer (push value to stack). 
+
+NIL: What is the difference between NIL and CSTI 0?
+The instruction pushes a nil reference. 
+The machine expects one integer i from the program array p, and pushes the null 
+reference onto the stack by storing the raw value 0, which is an untagged pointer
+and thereby a reference and not a integer value. Lastly, it increments the stack 
+pointer (push value to stack)
+The difference between NIL and CSTI 0 is that for CSTI 0, the integer constant i is 
+tagged, and it isn't for NIL. 
+
+IFZERO: 
+The instruction tests whether an integer is zero, or a reference is nil.
+The machine expects a word from the top of the stack, and then 
+1. Checks if the word is an integer by checking if the least significant bit is 1 or 0. 
+2. If above is true, it Untags v and checks if it is equal to 0.
+3. If above is false, it leave v as it is and checks if it is equal to 0. 
+4. If step 2 or 3 is true, then it jumps to target p[pc], 
+    if false it continues normally with pc + 1. 
+
+
+CONS: 
+It creates a variable p which is a pointer to a word by using allocate with a CONSTAG,
+length 2, the stack and the stack pointer. After allocation it has allocated a new cons
+cell (a heap-allocated block of length 2), which stores the two top values in the new
+block's first and second slots (car in p[1], cdr in p[2]). It then replaces 
+the two values on the stack with a single heap reference (the pointer to the new 
+block) and decrements the stack pointer sp. The allocate function may trigger 
+the garbage collector if there is no free block large enough.
+
+CAR
+It creates a variable p which is a pointer to a word using the top of the stack. 
+If p is equal to 0 (a null pointer reference) and returns -1. 
+Otherwise, it takes the first element of the block and inserts it as the top of
+the stack. 
+
+SETCAR
+It gets a value from the top of the stack (pops it) and then gets a block from 
+the top of the stack. Afterwards, we insert the popped value in the first space of 
+the retrieved block. 
+
+
+(ii)
+Assume the 32-bit header layout:
+- bits 31..24 = tttttttt (8-bit block tag)
+- bits 23..2 = nnn...nn (22-bit length field)
+- bits 1..0 = gg (2-bit color)
+
+Length(hdr) = (((hdr) >> 2) & 0x003FFFFF):
+It shifts hdr right by 2 bits (which removes gg). It then masks the block tag, leaving
+only the length field left. The result is the numeric value of the length field. 
+
+Color(hdr) = ((hdr) & 3): 
+It zeros out all the bits leaving the color (the last two gg) unchanged. The result 
+is the 2-bit color field as an integer. 
+
+Paint(hdr, color) = (((hdr) & (~3)) | (color)): 
+It zeros out gg and replaces with the new color given as parameter, leaving all other 
+bits unchanged. The result is a new header word identical to the original except 
+the color bits gg have been replaced by 'color'. 
+
+
+(iii)
+Allocate is only used in the CONS instruction, because the CONS instruction demands 
+heap allocation. 
+If there is no space on the heap, perform a garbage collection, and try again. 
+
+
+(iv)
+It is only called allocate(), if there is no space on the heap, then 
+a garbage collection is performed with collect(). 
+
+__________________________________________________________________
+
+EXERCISE 10.2: 
+
+
+
+__________________________________________________________________
+
+EXERCISE 10.3: 
